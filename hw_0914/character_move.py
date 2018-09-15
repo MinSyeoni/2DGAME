@@ -16,7 +16,7 @@ while (True):
         update_canvas()
         frame = (frame + 1) % 8
         x = x + 2
-        delay(0.05)
+        delay(0.03)
     while (y < 600 - 40):
         clear_canvas()
         grass.draw_now(400, 30)
@@ -24,7 +24,7 @@ while (True):
         update_canvas()
         frame = (frame + 1) % 8
         y = y + 2
-        delay(0.05)
+        delay(0.03)
     while (x > 0 + 20):
         clear_canvas()
         grass.draw_now(400, 30)
@@ -32,7 +32,7 @@ while (True):
         update_canvas()
         frame = (frame + 1) % 8
         x = x - 2
-        delay(0.05)
+        delay(0.03)
     while (y > 0 + 90):
         clear_canvas()
         grass.draw_now(400, 30)
@@ -40,7 +40,7 @@ while (True):
         update_canvas()
         frame = (frame + 1) % 8
         y = y - 2
-        delay(0.05)
+        delay(0.03)
     get_events()
 
 close_canvas()
