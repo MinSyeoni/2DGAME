@@ -18,18 +18,36 @@ grass = load_image('grass.png')
 character = load_image('run_animation.png')
 
 running = True
-x,y = KPU_WIDTH // 2, KPU_HEIGHT // 2
+x,y = KPU_WIDTH, KPU_HEIGHT
+tx,ty=x,y
 frame = 0
-speed = 1
+speed = 5
 
 while running:
     clear_canvas()
-    grass.draw(KPU_WIDTH // 2, KPU_HEIGHT // 20)
+    grass.draw(400,30)
     character.clip_draw(frame * 100, 0, 100, 100, x, y)
-    update_canvas()
     frame = (frame + 1) % 8
+    handle_events()
+    update_canvas()
+    if x > tx:
+        x -= speed
+        if x < tx:
+            x = tx
+    elif x < tx:
+        x += speed
+        if x > tx:
+            x = tx
+    if y > ty:
+        y -= speed
+        if y < ty:
+            x = tx
+    elif y < ty:
+        y += speed
+        if y > ty:
+            y = ty
 
-    delay(0.02)
+    delay(0.05)
     handle_events()
 
 close_canvas()
