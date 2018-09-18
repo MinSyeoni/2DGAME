@@ -66,6 +66,7 @@ while (True):
         get_events()
         x = 20
         y = 90
+        radianAngle=0
 
 
 
