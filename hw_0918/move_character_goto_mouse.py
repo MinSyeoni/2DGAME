@@ -41,7 +41,7 @@ while running:
     if y > ty:
         y -= speed
         if y < ty:
-            x = tx
+            y = ty
     elif y < ty:
         y += speed
         if y > ty:
