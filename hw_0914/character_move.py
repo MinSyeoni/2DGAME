@@ -67,9 +67,6 @@ while (True):
         x = 20
         y = 90
         radianAngle=0
-
-
-
     get_events()
-
+get_events()
 close_canvas()
