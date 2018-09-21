@@ -30,6 +30,7 @@ while running:
     frame = (frame + 1) % 8
     handle_events()
     update_canvas()
+    
     if x > tx:
         x -= speed
         if x < tx:
