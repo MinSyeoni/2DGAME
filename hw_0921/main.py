@@ -1,5 +1,6 @@
 import random
 from pico2d import *
+import math
 KPU_WIDTH, KPU_HEIGHT = 800, 600
 
 class Grass:
@@ -20,22 +21,19 @@ class Boy:
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
     def update(self):
         self.frame = (self.frame + 1) % 8
-        if self.x > tx:
-            self.x -= self.speed
-            if self.x < tx:
-                self.x = tx
-        elif self.x < tx:
-            self.x += self.speed
-            if self.x > tx:
-                self.x = tx
-        if self.y > ty:
-            self.y -= self.speed
-            if self.y < ty:
-                self.y = ty
-        elif self.y < ty:
-            self.y += self.speed
-            if self.y > ty:
-                self.y = ty
+        if len(point) > 0:
+            (tx,ty) = point[0]
+            pointX, pointY = tx - self.x, ty - self.y
+            list = math.sqrt(pointX ** 2 + pointY ** 2)
+            if list > 0:
+                self.x += self.speed * pointX / list
+                self.y += self.speed * pointY / list
+                if pointX < 0 and self.x < tx: self.x = tx
+                if pointX > 0 and self.x > tx: self.x = tx
+                if pointY < 0 and self.y < tx: self.y = ty
+                if pointY < 0 and self.y < tx: self.y = ty
+            if(self.x, self.y) == (tx,ty):
+                del point[0]
 
 def handle_events():
     global running
@@ -65,6 +63,8 @@ running = True
 x,y = KPU_WIDTH, KPU_HEIGHT
 tx,ty=x,y
 frame = 0
+point = []
+goal = load_image('goal.png')
 
 while running:
     handle_events()
@@ -74,6 +74,9 @@ while running:
 
     clear_canvas()
     grass.draw()
+
+    for loc in point:
+        goal.draw(loc[0], loc[1])
 
     for boy in boys:
         boy.draw()
