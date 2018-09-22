@@ -1,5 +1,6 @@
 import random
 from pico2d import *
+KPU_WIDTH, KPU_HEIGHT = 800, 600
 
 class Grass:
     def __init__(self):
@@ -23,19 +24,26 @@ class Boy:
 
 def handle_events():
     global running
+    global tx, ty
     events = get_events()
 
     for event in events:
         if event.type == SDL_QUIT:
             running = False
+        elif event.type == SDL_MOUSEMOTION:
+            tx, ty = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
 
-open_canvas()
+open_canvas(KPU_WIDTH, KPU_HEIGHT)
 
 boys = [Boy() for i in range(20)]
 grass = Grass()
 running = True
+x,y = KPU_WIDTH, KPU_HEIGHT
+tx,ty=x,y
+frame = 0
+speed = 5
 
 while running:
     handle_events()
@@ -49,6 +57,23 @@ while running:
         boy.draw()
     update_canvas()
 
-    delay(0.03)
+    if x > tx:
+        x -= speed
+        if x < tx:
+            x = tx
+    elif x < tx:
+        x += speed
+        if x > tx:
+            x = tx
+    if y > ty:
+        y -= speed
+        if y < ty:
+            y = ty
+    elif y < ty:
+        y += speed
+        if y > ty:
+            y = ty
 
+    delay(0.03)
+    handle_events()
 close_canvas()
