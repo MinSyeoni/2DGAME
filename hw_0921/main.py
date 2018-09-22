@@ -6,7 +6,7 @@ KPU_WIDTH, KPU_HEIGHT = 800, 600
 
 class Grass:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('../image/grass.png')
         print(self.image)
     def draw(self):
         self.image.draw(400, 30)
@@ -17,7 +17,7 @@ class Boy:
         self.y = random.randint(90,550)
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
-        self.image = load_image('run_animation.png')
+        self.image = load_image('../image/run_animation.png')
         print(self.image)
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
@@ -63,7 +63,7 @@ x,y = KPU_WIDTH, KPU_HEIGHT
 tx,ty=x,y
 frame = 0
 point = []
-goal = load_image('goal.png')
+goal = load_image('../image/goal.png')
 
 while running:
     handle_events()
