@@ -33,7 +33,7 @@ class Boy:
                 if pointX < 0 and self.x < tx: self.x = tx
                 if pointX > 0 and self.x > tx: self.x = tx
                 if pointY < 0 and self.y < tx: self.y = ty
-                if pointY < 0 and self.y < tx: self.y = ty
+                if pointY > 0 and self.y > tx: self.y = ty
             if(self.x, self.y) == (tx,ty):
                 del point[0]
 
