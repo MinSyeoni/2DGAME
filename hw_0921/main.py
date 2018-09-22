@@ -20,7 +20,22 @@ class Boy:
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
     def update(self):
         self.frame = (self.frame + 1) % 8
-        self.x += self.speed
+        if self.x > tx:
+            self.x -= self.speed
+            if self.x < tx:
+                self.x = tx
+        elif self.x < tx:
+            self.x += self.speed
+            if self.x > tx:
+                self.x = tx
+        if self.y > ty:
+            self.y -= self.speed
+            if self.y < ty:
+                self.y = ty
+        elif self.y < ty:
+            self.y += self.speed
+            if self.y > ty:
+                self.y = ty
 
 def handle_events():
     global running
@@ -43,7 +58,6 @@ running = True
 x,y = KPU_WIDTH, KPU_HEIGHT
 tx,ty=x,y
 frame = 0
-speed = 5
 
 while running:
     handle_events()
@@ -57,22 +71,7 @@ while running:
         boy.draw()
     update_canvas()
 
-    if x > tx:
-        x -= speed
-        if x < tx:
-            x = tx
-    elif x < tx:
-        x += speed
-        if x > tx:
-            x = tx
-    if y > ty:
-        y -= speed
-        if y < ty:
-            y = ty
-    elif y < ty:
-        y += speed
-        if y > ty:
-            y = ty
+
 
     delay(0.03)
     handle_events()
