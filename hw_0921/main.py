@@ -1,6 +1,7 @@
-import random
 from pico2d import *
+import random
 import math
+
 KPU_WIDTH, KPU_HEIGHT = 800, 600
 
 class Grass:
@@ -17,6 +18,7 @@ class Boy:
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
         self.image = load_image('run_animation.png')
+        print(self.image)
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
     def update(self):
@@ -37,20 +39,17 @@ class Boy:
 
 def handle_events():
     global running
-    global tx, ty
     global point
     events = get_events()
 
     for event in events:
         if event.type == SDL_QUIT:
             running = False
-        elif event.type == SDL_MOUSEMOTION:
-            tx, ty = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
         elif event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == 1:
-                tx, ty = event.x, KPU_HEIGHT - event.y
+                tx, ty = event.x, KPU_HEIGHT - 1 - event.y
                 point += [(tx,ty)]
             else:
                 point = []
@@ -83,6 +82,6 @@ while running:
 
     update_canvas()
 
-    delay(0.03)
+    delay(0.01)
     handle_events()
 close_canvas()
