@@ -40,6 +40,7 @@ class Boy:
 def handle_events():
     global running
     global tx, ty
+    global point
     events = get_events()
 
     for event in events:
@@ -49,6 +50,12 @@ def handle_events():
             tx, ty = event.x, KPU_HEIGHT - 1 - event.y
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == 1:
+                tx, ty = event.x, KPU_HEIGHT - event.y
+                point += [(tx,ty)]
+            else:
+                point = []
 
 open_canvas(KPU_WIDTH, KPU_HEIGHT)
 
@@ -67,11 +74,11 @@ while running:
 
     clear_canvas()
     grass.draw()
+
     for boy in boys:
         boy.draw()
+
     update_canvas()
-
-
 
     delay(0.03)
     handle_events()
