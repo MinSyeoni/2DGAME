@@ -3,18 +3,22 @@ from hw_0928 import game_framework
 from hw_0928 import title_state
 
 name = "StartState"
-image = None
+logo = None
 logo_time = 0.0
 
 def enter():
-    global image
+    global logo
     open_canvas()
-    image = load_image('../image/kpu_credit.png')
+    logo = load_image('../image/kpu_credit.png')
 
 def exit():
-    global image
-    del(image)
-    close_canvas()
+    del logo
+
+def draw():
+    global logo
+    clear_canvas()
+    logo.draw(800, 600)
+    update_canvas()
 
 def update():
     global logo_time
@@ -24,8 +28,12 @@ def update():
     delay(0.01)
     logo_time += 0.01
 
-def draw():
-    global image
-    clear_canvas()
-    image.draw(800, 600)
-    update_canvas()
+def handle_events():
+    pass
+
+def pause():
+    pass
+
+def resume():
+    pass
+
