@@ -1,4 +1,5 @@
 from pico2d import *
+import game_framework
 import random
 import math
 
@@ -37,6 +38,16 @@ class Boy:
             if(self.x, self.y) == (tx,ty):
                 del point[0]
 
+def enter():
+    global boy, grass
+    boy = Boy()
+    grass = Grass()
+
+def exit():
+    global boy, grass
+    del(boy)
+    del(grass)
+
 def handle_events():
     global running
     global point
@@ -44,9 +55,9 @@ def handle_events():
 
     for event in events:
         if event.type == SDL_QUIT:
-            running = False
+            game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
+            game_framework.change_state(title_state)
         elif event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == 1:
                 tx, ty = event.x, KPU_HEIGHT - 1 - event.y
@@ -85,3 +96,6 @@ while running:
     delay(0.01)
     handle_events()
 close_canvas()
+
+if __name__ == '__main__':
+    main()
