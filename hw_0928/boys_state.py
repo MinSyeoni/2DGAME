@@ -2,9 +2,6 @@ from pico2d import *
 from hw_0928 import game_framework
 from hw_0928 import title_state
 import random
-import math
-
-KPU_WIDTH, KPU_HEIGHT = 800, 600
 
 class Grass:
     def __init__(self):
@@ -19,14 +16,15 @@ class Boy:
         self.y = random.randint(90,550)
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
+        self.point = []
         self.image = load_image('../image/run_animation.png')
         print(self.image)
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
     def update(self):
         self.frame = (self.frame + 1) % 8
-        if len(point) > 0:
-            (tx,ty) = point[0]
+        if len(self.point) > 0:
+            (tx,ty) = self.point[0]
             pointX, pointY = tx - self.x, ty - self.y
             list = math.sqrt(pointX ** 2 + pointY ** 2)
             if list > 0:
@@ -36,21 +34,10 @@ class Boy:
                 if pointX > 0 and self.x > tx: self.x = tx
                 if pointY < 0 and self.y < tx: self.y = ty
                 if pointY > 0 and self.y > tx: self.y = ty
-            if(self.x, self.y) == (tx,ty):
-                del point[0]
-
-def enter():
-    global boy, grass
-    boy = Boy()
-    grass = Grass()
-
-def exit():
-    global boy, grass
-    del(boy)
-    del(grass)
+            if(tx,ty) == (self.x,self.y):
+                del self.point[0]
 
 def handle_events():
-    global running
     global point
     events = get_events()
 
@@ -60,43 +47,37 @@ def handle_events():
         elif event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
         elif event.type == SDL_MOUSEBUTTONDOWN:
-            if event.button == 1:
-                tx, ty = event.x, KPU_HEIGHT - 1 - event.y
-                point += [(tx,ty)]
+            if event.button == SDL_BUTTON_LEFT:
+                tx, ty = event.x, 300 - event.y
+                point += [(tx, ty)]
             else:
                 point = []
 
-open_canvas(KPU_WIDTH, KPU_HEIGHT)
+def enter():
+    global boys, grass
+    open_canvas()
 
-boys = [Boy() for i in range(20)]
-grass = Grass()
-running = True
-x,y = KPU_WIDTH, KPU_HEIGHT
-tx,ty=x,y
-frame = 0
-point = []
-goal = load_image('../image/goal.png')
+    boys = [ Boy() for i in range(20) ]
+    grass = Grass()
 
-while running:
-    handle_events()
-
-    for boy in boys:
-        boy.update()
-
+def draw():
+    global grass, boys
     clear_canvas()
     grass.draw()
-
-    for loc in point:
-        goal.draw(loc[0], loc[1])
-
-    for boy in boys:
-        boy.draw()
-
+    for b in boys:
+        b.draw()
     update_canvas()
 
+
+
+def update():
+    global boys
+    for b in boys:
+        b.update()
     delay(0.01)
-    handle_events()
-close_canvas()
+
+def exit():
+    close_canvas()
 
 if __name__ == '__main__':
     main()
