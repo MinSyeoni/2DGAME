@@ -11,15 +11,6 @@ def enter():
     open_canvas()
     logo = load_image('../image/kpu_credit.png')
 
-def exit():
-    del logo
-
-def draw():
-    global logo
-    clear_canvas()
-    logo.draw(800, 600)
-    update_canvas()
-
 def update():
     global logo_time
     if (logo_time > 1.0):
@@ -27,6 +18,15 @@ def update():
         game_framework.push_state(title_state)
     delay(0.01)
     logo_time += 0.01
+
+def draw():
+    global logo
+    clear_canvas()
+    logo.draw(400, 300)
+    update_canvas()
+
+def exit():
+    del logo
 
 def handle_events():
     pass
@@ -37,3 +37,8 @@ def pause():
 def resume():
     pass
 
+def main():
+    enter()
+
+if __name__ == '__main__':
+    main()

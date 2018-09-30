@@ -26,5 +26,11 @@ def handle_events():
 
 def draw():
     clear_canvas()
-    image.draw(800, 600)
+    image.draw(400, 300)
     update_canvas()
+
+def update():
+    pass
+
+if __name__ == '__main__':
+    main()
