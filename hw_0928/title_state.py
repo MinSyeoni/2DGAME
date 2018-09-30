@@ -24,8 +24,7 @@ def handle_events():
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 game_framework.change_state(boys_state)
 
-
 def draw():
     clear_canvas()
-    image.draw(400, 300)
+    image.draw(800, 600)
     update_canvas()

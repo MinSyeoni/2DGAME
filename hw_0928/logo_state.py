@@ -23,8 +23,9 @@ def update():
         game_framework.push_state(title_state)
     delay(0.01)
     logo_time += 0.01
+
 def draw():
     global image
     clear_canvas()
-    image.draw(400, 300)
+    image.draw(800, 600)
     update_canvas()
