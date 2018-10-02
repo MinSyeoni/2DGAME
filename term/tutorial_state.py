@@ -9,7 +9,6 @@ class Boy:
         self.y = random.randint(90,550)
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
-        self.point = []
         self.image = load_image('../image/run_animation.png')
         print(self.image)
 
@@ -18,24 +17,13 @@ class Boy:
 
     def update(self):
         self.frame = (self.frame + 1) % 8
-        # if len(self.point) > 0:
-        #     (tx,ty) = self.point[0]
-        #     pointX, pointY = tx - self.x, ty - self.y
-        #     list = math.sqrt(pointX ** 2 + pointY ** 2)
-        #     if list > 0:
-        #         self.x += self.speed * pointX / list
-        #         self.y += self.speed * pointY / list
-        #         if pointX < 0 and self.x < tx: self.x = tx
-        #         if pointX > 0 and self.x > tx: self.x = tx
-        #         if pointY < 0 and self.y < tx: self.y = ty
-        #         if pointY > 0 and self.y > tx: self.y = ty
-        #     if(tx,ty) == (self.x,self.y):
-        #         del self.point[0]
+        tx = self.x
+        ty = self.y
 
 def handle_events():
     global running
-    global point
     global boys
+    global tx, ty
     events = get_events()
 
     for event in events:
@@ -46,18 +34,13 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(title_state)
         elif event.type == SDLK_w:
-            for b in boys:
-                tx = event.x
-                b.point += [(tx)]
-        # elif event.type == SDL_MOUSEBUTTONDOWN:
-        #     if event.button == SDL_BUTTON_LEFT:
-        #         for b in boys:
-        #             tx, ty = event.x, 600 - 1- event.y
-        #             b.point += [(tx, ty)]
-        #     else:
-        #        for b in boys:
-        #            b.point = []
-
+            tx+=10
+        elif event.type == SDLK_s:
+            tx-=10
+        elif event.type == SDLK_a:
+            ty-=10
+        elif event.type == SDLK_d:
+            ty+=10
 def enter():
     global boys
     boys = [ Boy() for i in range(1) ]
