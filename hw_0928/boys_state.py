@@ -64,7 +64,6 @@ def handle_events():
 
 def enter():
     global boys, grass
-    open_canvas()
 
     boys = [ Boy() for i in range(20) ]
     grass = Grass()
