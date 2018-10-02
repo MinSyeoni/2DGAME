@@ -1,6 +1,6 @@
 from pico2d import *
 from term import game_framework
-from term import title_state
+from term import tutorial_state
 import random
 
 class Grass:
@@ -52,7 +52,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.change_state(title_state)
+            game_framework.change_state(tutorial_state)
         elif event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
                 for b in boys:
