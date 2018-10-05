@@ -2,6 +2,9 @@ from pico2d import *
 from hw_0928 import game_framework
 from hw_0928 import title_state
 import random
+from enum import Enum
+
+BOYS_COUNT = 10
 
 class Grass:
     def __init__(self):
@@ -65,7 +68,7 @@ def handle_events():
 def enter():
     global boys, grass
 
-    boys = [ Boy() for i in range(20) ]
+    boys = [ Boy() for i in range(BOYS_COUNT) ]
     grass = Grass()
 
 def draw():
