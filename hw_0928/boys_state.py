@@ -4,7 +4,7 @@ from hw_0928 import title_state
 import random
 from enum import Enum
 
-BOYS_COUNT = 10
+BOYS_COUNT = 100
 
 class Grass:
     def __init__(self):
@@ -14,13 +14,15 @@ class Grass:
         self.image.draw(400, 30)
 
 class Boy:
+    image = None
     def __init__(self):
         self.x = random.randint(0,200)
         self.y = random.randint(90,550)
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
         self.point = []
-        self.image = load_image('../image/run_animation.png')
+        if Boy.image == None:
+            Boy.image = load_image('../image/run_animation.png')
         self.goal = load_image('../image/goal.png')
         print(self.image)
     def draw(self):
