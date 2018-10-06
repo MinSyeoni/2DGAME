@@ -4,7 +4,7 @@ from hw_0928 import title_state
 import random
 from enum import Enum
 
-BOYS_COUNT = 100
+BOYS_COUNT = 1000
 
 class Grass:
     def __init__(self):
@@ -15,22 +15,42 @@ class Grass:
 
 class Boy:
     image = None
+
+    LEFT_RUN, RIGHT_RUN = 0,1
     def __init__(self):
         self.x = random.randint(0,200)
         self.y = random.randint(90,550)
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
         self.point = []
+        self.dir = 1
+        self.state = self.RIGHT_RUN
         if Boy.image == None:
-            Boy.image = load_image('../image/run_animation.png')
+            Boy.image = load_image('../image/animation_sheet.png')
         self.goal = load_image('../image/goal.png')
         print(self.image)
     def draw(self):
         for goal in self.point:
             self.goal.draw(goal[0],goal[1])
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame * 100, self.state * 100, 100, 100, self.x, self.y)
+
     def update(self):
-        self.frame = (self.frame + 1) % 8
+        if self.state == self.RIGHT_RUN:
+            self.frame = (self.frame + 1) % 8
+            self.x += (self.dir * 5)
+        elif self.state == self.LEFT_RUN:
+            self.frame = (self.frame + 1) % 8
+            self.x += (self.dir * 5)
+
+        if self.x >800:
+            self.dir = -1
+            self.x = 800
+            self.state = self.LEFT_RUN
+        elif self.x <0:
+            self.dir = 1
+            self.x = 0
+            self.state = self.RIGHT_RUN
+
         if len(self.point) > 0:
             (tx,ty) = self.point[0]
             pointX, pointY = tx - self.x, ty - self.y
