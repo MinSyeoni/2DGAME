@@ -87,6 +87,49 @@ def handle_events():
                for b in boys:
                    b.point = []
 
+def handle_left_run(self):
+    self.x -= 5
+    self.run_frames += 1
+    if self.x < 0:
+        self.state = self.RIGHT_RUN
+        self.x = 0
+    if self.run_frames == 100:
+        self.state = self.LEFT_STAND
+        self.stand_frames = 0
+
+def handle_left_stand(self):
+    self.stand_frames += 1
+    if self.stand_frames == 50:
+        self.state = self.LEFT_RUN
+        self.run_frames = 0
+
+def handle_right_run(self):
+    self.x += 5
+    self.run_frames += 1
+    if self.x > 800:
+        self.state = self.LEFT_RUN
+        self.x = 800
+    if self.run_frames == 100:
+        self.state = self.RIGHT_STAND
+        self.stand_frames = 0
+
+def handle_right_stand(self):
+    self.stand_frames += 1
+    if self.stand_frames == 50:
+        self.state = self.RIGHT_RUN
+        self.run_frames = 0
+
+LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
+handle_state = {
+    LEFT_RUN: handle_left_run,
+    RIGHT_RUN: handle_right_run,
+    LEFT_STAND: handle_left_stand,
+    RIGHT_STAND: handle_right_stand
+}
+def update(self):
+    self.frame = (self.frame + 1) % 8
+    self.handle_state[self.state](self)
+
 def enter():
     global boys, grass
 
@@ -107,7 +150,20 @@ def update():
         b.update()
     delay(0.01)
 
-def exit():
+def main():
+    open_canvas()
+    boy = Boy()
+    grass = Grass()
+    global running
+    running = True
+    while running:
+        handle_events()
+        boy.update()
+        clear_canvas()
+        grass.draw()
+        boy.draw()
+        update_canvas()
+        delay(0.05)
     close_canvas()
 
 if __name__ == '__main__':
