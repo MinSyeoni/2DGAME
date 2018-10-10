@@ -45,14 +45,22 @@ def update():
     player.update()
     if player.state == 1:
         player.x -= 5
+        if player.x < 100:
+            player.x = 100
     elif player.state == 2:
         player.x += 5
+        if player.x >700:
+            player.x = 700
     elif player.state == 3:
         player.y += 5
+        if player.y > 520:
+            player.y = 520
     elif player.state == 4:
         player.y -= 5
+        if player.y < 150:
+            player.y = 150
 
-    delay(0.06)
+    delay(0.05)
 
 def handle_events():
     global running
@@ -79,7 +87,6 @@ def handle_events():
                 player.state = 4
         elif event.type == SDL_KEYUP:
             player.state = 0
-
 
 def exit():
     close_canvas()
