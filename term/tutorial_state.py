@@ -45,7 +45,7 @@ def update():
     player.update()
     if player.state == 1:
         player.x -= 5
-        if player.x < 100:
+        if player.x < 100: # 이동범위 제한
             player.x = 100
     elif player.state == 2:
         player.x += 5
