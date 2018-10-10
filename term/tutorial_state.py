@@ -3,13 +3,19 @@ from term import game_framework
 from term import title_state
 import random
 
+class Tutorial:
+    def __init__(self):
+        self.image = load_image('image/tutorial.png')
+        print(self.image)
+    def draw(self):
+        self.image.draw(400, 300)
 class Boy:
     def __init__(self):
-        self.x = random.randint(0,200)
-        self.y = random.randint(90,550)
+        self.x = random.randint(90,700)
+        self.y = random.randint(100,500)
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
-        self.image = load_image('../image/run_animation.png')
+        self.image = load_image('image/run_stand_ani.png')
         print(self.image)
 
     def draw(self):
@@ -42,12 +48,14 @@ def handle_events():
         elif event.type == SDLK_d:
             ty+=10
 def enter():
-    global boys
+    global boys,tutorial
     boys = [ Boy() for i in range(1) ]
+    tutorial = Tutorial()
 
 def draw():
-    global boys
+    global boys,tutorial
     clear_canvas()
+    tutorial.draw()
     for b in boys:
         b.draw()
     update_canvas()
@@ -56,7 +64,7 @@ def update():
     global boys
     for b in boys:
         b.update()
-    delay(0.01)
+    delay(0.06)
 
 def exit():
     close_canvas()
