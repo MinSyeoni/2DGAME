@@ -27,7 +27,6 @@ class Player:
         events = get_events()
         self.frame = (self.frame + 1) % 8
 
-
 def enter():
     global player,tutorial
     player = Player()
