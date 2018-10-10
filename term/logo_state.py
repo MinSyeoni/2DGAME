@@ -9,7 +9,7 @@ logo_time = 0.0
 def enter():
     global logo
     open_canvas()
-    logo = load_image('logo.png')
+    logo = load_image('image/logo.png')
 
 def update():
     global logo_time
