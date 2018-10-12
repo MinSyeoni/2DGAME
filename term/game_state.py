@@ -10,7 +10,7 @@ class Boy:
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
         self.point = []
-        self.image = load_image('image/run_stand_ani.png')
+        self.image = load_image('image/tutorial.png')
     def draw(self):
         self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
     def update(self):
@@ -30,13 +30,12 @@ def handle_events():
             game_framework.change_state(tutorial_state)
 
 def enter():
-    global boys, grass
+    global boys
     boys = [ Boy() for i in range(20) ]
 
 def draw():
-    global grass, boys
+    global boys
     clear_canvas()
-    grass.draw()
     for b in boys:
         b.draw()
     update_canvas()
