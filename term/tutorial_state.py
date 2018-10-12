@@ -14,7 +14,7 @@ class Player:
     def __init__(self):
         self.x = random.randint(90,700)
         self.y = random.randint(100,500)
-        self.speed = random.uniform(1.0,3.0)
+        self.speed = 2
         self.frame = random.randint(0,7)
         self.goto = 0 # 0 업 1 다운
         self.player_image = load_image('image/run_stand_ani.png')
@@ -41,19 +41,31 @@ class Player:
     def update(self):
         events = get_events()
         self.frame = (self.frame + 1) % 8
+
         if len(self.attack) > 0:
             (tx,ty) = self.attack[0]
-            pointX, pointY = tx - self.x, ty - self.y
-            list = math.sqrt(pointX ** 2 + pointY ** 2)
+            attackX, attackY = tx - self.x, ty - self.y
+            list = math.sqrt(attackX ** 2 + attackY ** 2)
             if list > 0:
-                self.x += self.speed * pointX / list
-                self.y += self.speed * pointY / list
-                if pointX < 0 and self.x < tx: self.x = tx
-                if pointX > 0 and self.x > tx: self.x = tx
-                if pointY < 0 and self.y < tx: self.y = ty
-                if pointY > 0 and self.y > tx: self.y = ty
+                self.x += self.speed * attackX / list
+                self.y += self.speed * attackY / list
+                if attackX < 0 and self.x < tx: self.x = tx
+                if attackX > 0 and self.x > tx: self.x = tx
+                if attackY < 0 and self.y < tx: self.y = ty
+                if attackY > 0 and self.y > tx: self.y = ty
             if(self.x, self.y) == (tx,ty):
                 del self.attack[0]
+
+    def handel_events(self):
+        for event in events:
+            if event.type == SDL_MOUSEBUTTONDOWN:
+                if event.button == SDL_BUTTON_LEFT:
+                    for a in attack:
+                        tx, ty = event.x, 600 - 1- event.y
+                        a.attack += [(tx, ty)]
+                else:
+                    for a in attack:
+                        a.attack = []
 
 def enter():
     global player,tutorial
@@ -120,14 +132,6 @@ def handle_events():
                 player.idle = 2
             player.state = 2
             player.goto = 2
-        elif event.type == SDL_MOUSEBUTTONDOWN:
-            if event.button == SDL_BUTTON_LEFT:
-                for a in attack:
-                    tx, ty = event.x, 600 - 1- event.y
-                    a.point += [(tx, ty)]
-            else:
-               for a in attack:
-                   a.point = []
 
 def exit():
     close_canvas()
