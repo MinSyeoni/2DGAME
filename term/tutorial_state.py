@@ -24,8 +24,8 @@ class Player:
         self.attack_image = load_image('image/attack.png')
 
     def draw(self):
-        for attack in self.attack:
-            self.attack.draw(attack[0], attack[1])
+        for attack_image in self.attack:
+            self.attack_image.draw(attack[0], attack[1])
 
         if self.state == 0 or (self.idle == 1 and self.goto != 2):
             self.player_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
@@ -60,12 +60,12 @@ class Player:
         for event in events:
             if event.type == SDL_MOUSEBUTTONDOWN:
                 if event.button == SDL_BUTTON_LEFT:
-                    for a in attack:
+                    for attack_image in attack:
                         tx, ty = event.x, 600 - 1- event.y
-                        a.attack += [(tx, ty)]
+                        attack_image.attack += [(tx, ty)]
                 else:
-                    for a in attack:
-                        a.attack = []
+                    for attack_image in attack:
+                        attack_image.attack = []
 
 def enter():
     global player,tutorial
