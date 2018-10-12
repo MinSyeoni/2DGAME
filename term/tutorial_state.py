@@ -1,6 +1,7 @@
 from pico2d import *
 from term import game_framework
 from term import title_state
+from term import game_state
 import random
 
 class Tutorial:
@@ -100,6 +101,9 @@ def update():
         if player.y < 150:
             player.y = 150
     delay(0.05)
+
+    if 650 < player.x < 700 and 300 < player.y <350:
+        game_framework.change_state(game_state)
 
 def handle_events():
     global running
