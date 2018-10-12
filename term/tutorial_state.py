@@ -17,24 +17,24 @@ class Player:
         self.speed = random.uniform(1.0,3.0)
         self.frame = random.randint(0,7)
         self.goto = 0 # 0 업 1 다운
-        self.image = load_image('image/run_stand_ani.png')
+        self.player_image = load_image('image/run_stand_ani.png')
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
-        self.ball = [] # 총알 공격
-        self.attack = load_image('image/attack.png')
-        print(self.image)
+        self.attack = [] # 총알 공격
+        self.attack_image = load_image('image/attack.png')
+        print(self.player_image)
 
     def draw(self):
         if self.state == 0 or (self.idle == 1 and self.goto != 2):
-            self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+            self.player_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
         elif self.state == 1 or (self.idle == 2 and self.goto != 2) :
-            self.image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
+            self.player_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
         elif self.idle == 1:
-            self.image.clip_draw(self.frame * 100, 200, 100, 100, self.x, self.y)
+            self.player_image.clip_draw(self.frame * 100, 200, 100, 100, self.x, self.y)
         elif self.idle == 2:
-            self.image.clip_draw(self.frame * 100, 300, 100, 100, self.x, self.y)
+            self.player_image.clip_draw(self.frame * 100, 300, 100, 100, self.x, self.y)
         else:
-            self.image.clip_draw(self.frame*100, self.state * 100, 100, 100, self.x, self.y)
+            self.player_image.clip_draw(self.frame*100, self.state * 100, 100, 100, self.x, self.y)
 
     def update(self):
         events = get_events()
