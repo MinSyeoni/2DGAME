@@ -20,6 +20,8 @@ class Player:
         self.image = load_image('image/run_stand_ani.png')
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
+        self.ball = [] # 총알 공격
+        self.attack = load_image('image/attack.png')
         print(self.image)
 
     def draw(self):
