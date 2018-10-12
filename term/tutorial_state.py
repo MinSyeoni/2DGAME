@@ -22,9 +22,11 @@ class Player:
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
         self.attack = [] # 총알 공격
         self.attack_image = load_image('image/attack.png')
-        print(self.player_image)
 
     def draw(self):
+        for attack in self.attack:
+            self.attack.draw(attack[0], attack[1])
+
         if self.state == 0 or (self.idle == 1 and self.goto != 2):
             self.player_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
         elif self.state == 1 or (self.idle == 2 and self.goto != 2) :
@@ -39,6 +41,19 @@ class Player:
     def update(self):
         events = get_events()
         self.frame = (self.frame + 1) % 8
+        if len(self.attack) > 0:
+            (tx,ty) = self.attack[0]
+            pointX, pointY = tx - self.x, ty - self.y
+            list = math.sqrt(pointX ** 2 + pointY ** 2)
+            if list > 0:
+                self.x += self.speed * pointX / list
+                self.y += self.speed * pointY / list
+                if pointX < 0 and self.x < tx: self.x = tx
+                if pointX > 0 and self.x > tx: self.x = tx
+                if pointY < 0 and self.y < tx: self.y = ty
+                if pointY > 0 and self.y > tx: self.y = ty
+            if(self.x, self.y) == (tx,ty):
+                del self.attack[0]
 
 def enter():
     global player,tutorial
@@ -72,13 +87,12 @@ def update():
         player.y -= 5
         if player.y < 150:
             player.y = 150
-
-
     delay(0.05)
 
 def handle_events():
     global running
     global player
+    global attack
 
     events = get_events()
 
@@ -106,7 +120,14 @@ def handle_events():
                 player.idle = 2
             player.state = 2
             player.goto = 2
-
+        elif event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == SDL_BUTTON_LEFT:
+                for a in attack:
+                    tx, ty = event.x, 600 - 1- event.y
+                    a.point += [(tx, ty)]
+            else:
+               for a in attack:
+                   a.point = []
 
 def exit():
     close_canvas()
