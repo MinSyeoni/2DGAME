@@ -13,8 +13,6 @@ class Tutorial:
     def draw(self):
         self.image.draw(400, 300)
 
-
-
 def enter():
     global player,tutorial,bullets
     player = Player()
@@ -88,9 +86,6 @@ def handle_events():
                 player.goto = 0
             elif event.key == SDLK_s:   ##아래
                 player.goto = 1
-
-        if event.key == SDLK_g:
-            game_framework.change_state(title_state)
 
         elif event.type == SDL_KEYUP: # 키 안누를때 앉기
             if event.key == SDLK_a:  ##왼쪽
