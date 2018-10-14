@@ -4,7 +4,7 @@ from term import tutorial_state
 
 class Store:
     def __init__(self):
-        self.image = load_image('image/background.png')
+        self.image = load_image('image/store_back.png')
         print(self.image)
     def draw(self):
         self.image.draw(400, 300)
@@ -16,7 +16,7 @@ def enter():
 def draw():
     global store
     clear_canvas()
-    
+
     store.draw()
 
     update_canvas()
