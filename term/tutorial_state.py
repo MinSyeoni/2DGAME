@@ -60,8 +60,8 @@ def update():
     for member in bullets:
         member.update()
 
-    if 650 < player.x < 700 and 300 < player.y <350:
-        game_framework.change_state(game_state)
+    # if 650 < player.x < 700 and 300 < player.y <350:
+    #     game_framework.change_state(game_state)
 
 def handle_events():
     global running
