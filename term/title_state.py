@@ -1,6 +1,7 @@
 from pico2d import *
 from term import game_framework
 from term import tutorial_state
+from term import game_state
 
 name = "TitleState"
 image = None
