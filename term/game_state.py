@@ -2,23 +2,40 @@ from pico2d import *
 from term import game_framework
 from term import tutorial_state
 import random
+from Player import Player
+from Bullet import Bullet
 
-class Boy:
+class Ingame:
     def __init__(self):
-        self.x = random.randint(0,200)
-        self.y = random.randint(90,550)
-        self.speed = random.uniform(1.0,3.0)
-        self.frame = random.randint(0,7)
-        self.point = []
-        self.image = load_image('image/tutorial.png')
+        self.image = load_image('image/background.png')
+        print(self.image)
     def draw(self):
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
-    def update(self):
-        self.frame = (self.frame + 1) % 8
+        self.image.draw(400, 300)
+
+def enter():
+    global player,tutorial,bullets
+    player = Player()
+    bullets = []
+
+def draw():
+    global player,tutorial,bullets
+    clear_canvas()
+    tutorial.draw()
+    player.draw()
+
+    for loc in player.attack:
+        player.attack_image.draw(loc[0], loc[1])
+
+    for member in bullets:
+        member.draw()
+    update_canvas()
 
 def handle_events():
     global running
-    global boys
+    global player
+    global attack
+    global bullets
+
     events = get_events()
 
     for event in events:
@@ -29,22 +46,55 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(tutorial_state)
 
-def enter():
-    global boys
-    boys = [ Boy() for i in range(20) ]
+        if event.type == SDL_KEYDOWN:
+            if event.key == SDLK_a:  ##왼쪽
+                player.state = 0
+            elif event.key == SDLK_d:  ##오른쪽
+                player.state = 1
+            elif event.key == SDLK_w:  ##위
+                player.goto = 0
+            elif event.key == SDLK_s:  ##아래
+                player.goto = 1
 
-def draw():
-    global boys
-    clear_canvas()
-    for b in boys:
-        b.draw()
-    update_canvas()
+        elif event.type == SDL_KEYUP:  # 키 안누를때 앉기
+            if event.key == SDLK_a:  ##왼쪽
+                player.idle = 1
+            elif event.key == SDLK_d:  ##오른쪽\
+                player.idle = 2
+            player.state = 2
+            player.goto = 2
+
+        if event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == SDL_BUTTON_LEFT:
+                tx, ty = event.x, 600 - 1 - event.y
+                newBullet = Bullet(player.x, player.y, tx, ty)
+                bullets.append(newBullet)
 
 def update():
-    global boys
-    for b in boys:
-        b.update()
-    delay(0.01)
+    global player
+    global bullets
+    player.update()
+    if player.state == 0:
+        player.x -= 5
+        if player.x < 100:
+            player.x = 100
+    elif player.state == 1:
+        player.x += 5
+        if player.x >700:
+            player.x = 700
+
+    if player.goto == 0:
+        player.y += 5
+        if player.y > 520:
+            player.y = 520
+    elif player.goto == 1:
+        player.y -= 5
+        if player.y < 150:
+            player.y = 150
+    delay(0.05)
+
+    for member in bullets:
+        member.update()
 
 def exit():
     close_canvas()
