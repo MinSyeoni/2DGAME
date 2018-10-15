@@ -59,7 +59,7 @@ def update():
     for member in bullets:
         member.update()
 
-    # if 330< player.x <360 and 450 < player.y < 520:
+    # if 350< player.x <400 and 450 < player.y < 520:
     #     game_framework.change_state(store_state)
     # if 650 < player.x < 700 and 300 < player.y <350:
     #     game_framework.change_state(game_state)
