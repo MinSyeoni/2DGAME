@@ -16,7 +16,7 @@ class Bullet:
         self.attack = [] # 총알 공격
     def draw(self):
 
-        self.image.clip_draw(self.frame*50, 0, 50, 50, self.currX, self.currY)
+        self.image.clip_draw(self.frame*25, 0, 25, 25, self.currX, self.currY)
 
     def update(self):
 
