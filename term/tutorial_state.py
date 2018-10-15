@@ -2,6 +2,7 @@ from pico2d import *
 from term import game_framework
 from term import title_state
 from term import game_state
+from term import store_state
 from Player import Player
 from Bullet import Bullet
 import random
@@ -58,6 +59,8 @@ def update():
     for member in bullets:
         member.update()
 
+    # if 330< player.x <360 and 450 < player.y < 520:
+    #     game_framework.change_state(store_state)
     # if 650 < player.x < 700 and 300 < player.y <350:
     #     game_framework.change_state(game_state)
 
