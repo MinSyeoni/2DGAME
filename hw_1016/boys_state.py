@@ -156,7 +156,17 @@ def update(self):
 def enter():
     global boys, grass
 
-    boys = [ Boy() for i in range(BOYS_COUNT) ]
+    boys = []
+    fh = open('boys_data.json')
+    data = json.load(fh)
+    for e in data['boys']:
+        b = Boy()
+        b.name = e['name']
+        b.x = e['x']
+        b.y = e['y']
+        b.speed = e['speed']
+        boys.append(b)
+
     grass = Grass()
 
 def draw():
