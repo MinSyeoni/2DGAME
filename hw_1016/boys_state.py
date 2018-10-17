@@ -1,6 +1,6 @@
 from pico2d import *
-from hw_0928 import game_framework
-from hw_0928 import title_state
+import game_framework
+import title_state
 import random
 import json
 from enum import Enum
@@ -26,6 +26,7 @@ class Boy:
         if Boy.image == None:
             Boy.image = load_image('../image/animation_sheet.png')
         self.goal = load_image('../image/goal.png')
+        self.stand_frames = 0
         self.run_frames = 0
         print(self.image)
 
@@ -38,7 +39,10 @@ class Boy:
         self.frame = (self.frame + 1) % 8
         self.handle_state[self.state](self)
         if len(self.point) == 0:
-            self.state = self.state == Boy.RUN_RIGHT
+            if self.state == Boy.RUN_RIGHT :
+                self.state = Boy.IDLE_RIGHT
+            else:
+                self.state = Boy.IDLE_RIGHT
         else:
             (tx,ty) = self.point[0]
             pointX, pointY = tx - self.x, ty - self.y
@@ -48,48 +52,47 @@ class Boy:
                 self.y += self.speed * pointY / list
                 if pointX < 0 and self.x < tx: self.x = tx
                 if pointX > 0 and self.x > tx: self.x = tx
-                if pointY < 0 and self.y < tx: self.y = ty
-                if pointY > 0 and self.y > tx: self.y = ty
+                if pointY < 0 and self.y < ty: self.y = ty
+                if pointY > 0 and self.y > ty: self.y = ty
             if(tx,ty) == (self.x,self.y):
                 del self.point[0]
+                self.determine_state()
 
     def determine_state(self):
         if len(self.point) ==0:
-            self.state = Boy.IDLE_RIGHT if self.state == Boy.RUN_RIGHT else Boy.IDLE_LEFT
+            self.state = Boy.IDLE_RIGHT if self.state == Boy.IDLE_LEFT else Boy.RUN_RIGHT
         else:
             tx,ty = self.point[0]
             self.state = Boy.RUN_RIGHT if tx > self.x else Boy.RUN_LEFT
 
     def handle_left_run(self):
-        self.x -= 5
         self.run_frames += 1
         if self.x < 0:
-            self.state = self.RUN_RIGHT
+            self.state = self.RUN_LEFT
             self.x = 0
-        if self.run_frames == 100:
-            self.state = self.IDLE_LEFT
-            self.stand_frames = 0
+        # if self.run_frames == 100:
+        #     self.state = self.IDLE_LEFT
+        #     self.stand_frames = 0
 
     def handle_left_stand(self):
         self.stand_frames += 1
         if self.stand_frames == 50:
-            self.state = self.RUN_LEFT
+            self.state = self.IDLE_LEFT
             self.run_frames = 0
 
     def handle_right_run(self):
-        self.x += 5
         self.run_frames += 1
         if self.x > 800:
-            self.state = self.RUN_LEFT
+            self.state = self.RUN_RIGHT
             self.x = 800
-        if self.run_frames == 100:
-            self.state = self.RIGHT_STAND
-            self.stand_frames = 0
+        # if self.run_frames == 100:
+        #     self.state = self.IDLE_RIGHT
+        #     self.stand_frames = 0
 
     def handle_right_stand(self):
         self.stand_frames += 1
         if self.stand_frames == 50:
-            self.state = self.RIGHT_RUN
+            self.state = self.IDLE_RIGHT
             self.run_frames = 0
 
     handle_state = {
