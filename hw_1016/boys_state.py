@@ -2,9 +2,8 @@ from pico2d import *
 from hw_0928 import game_framework
 from hw_0928 import title_state
 import random
+import json
 from enum import Enum
-
-BOYS_COUNT = 1000
 
 class Grass:
     def __init__(self):
@@ -15,7 +14,7 @@ class Grass:
 
 class Boy:
     image = None
-
+    RUN_LEFT, RUN_RIGHT, IDLE_LEFT, IDLE_RIGHT = 0, 1, 2, 3
     def __init__(self):
         self.x = random.randint(0,200)
         self.y = random.randint(90,550)
@@ -23,7 +22,7 @@ class Boy:
         self.frame = random.randint(0,7)
         self.point = []
         self.dir = 1
-        self.state = self.RIGHT_RUN
+        self.state = self.IDLE_RIGHT
         if Boy.image == None:
             Boy.image = load_image('../image/animation_sheet.png')
         self.goal = load_image('../image/goal.png')
@@ -38,8 +37,9 @@ class Boy:
     def update(self):
         self.frame = (self.frame + 1) % 8
         self.handle_state[self.state](self)
-
-        if len(self.point) > 0:
+        if len(self.point) == 0:
+            self.state = self.state == Boy.RUN_RIGHT
+        else:
             (tx,ty) = self.point[0]
             pointX, pointY = tx - self.x, ty - self.y
             list = math.sqrt(pointX ** 2 + pointY ** 2)
@@ -53,27 +53,34 @@ class Boy:
             if(tx,ty) == (self.x,self.y):
                 del self.point[0]
 
+    def determine_state(self):
+        if len(self.point) ==0:
+            self.state = Boy.IDLE_RIGHT if self.state == Boy.RUN_RIGHT else Boy.IDLE_LEFT
+        else:
+            tx,ty = self.point[0]
+            self.state = Boy.RUN_RIGHT if tx > self.x else Boy.RUN_LEFT
+
     def handle_left_run(self):
         self.x -= 5
         self.run_frames += 1
         if self.x < 0:
-            self.state = self.RIGHT_RUN
+            self.state = self.RUN_RIGHT
             self.x = 0
         if self.run_frames == 100:
-            self.state = self.LEFT_STAND
+            self.state = self.IDLE_LEFT
             self.stand_frames = 0
 
     def handle_left_stand(self):
         self.stand_frames += 1
         if self.stand_frames == 50:
-            self.state = self.LEFT_RUN
+            self.state = self.RUN_LEFT
             self.run_frames = 0
 
     def handle_right_run(self):
         self.x += 5
         self.run_frames += 1
         if self.x > 800:
-            self.state = self.LEFT_RUN
+            self.state = self.RUN_LEFT
             self.x = 800
         if self.run_frames == 100:
             self.state = self.RIGHT_STAND
@@ -85,45 +92,12 @@ class Boy:
             self.state = self.RIGHT_RUN
             self.run_frames = 0
 
-    LEFT_RUN, RIGHT_RUN, LEFT_STAND, RIGHT_STAND = 0, 1, 2, 3
-
     handle_state = {
-        LEFT_RUN: handle_left_run,
-        RIGHT_RUN: handle_right_run,
-        LEFT_STAND: handle_left_stand,
-        RIGHT_STAND: handle_right_stand
+        RUN_LEFT: handle_left_run,
+        RUN_RIGHT: handle_right_run,
+        IDLE_LEFT: handle_left_stand,
+        IDLE_RIGHT: handle_right_stand
     }
-def create_team():
-    team_data_text = '  \
-                     { "Tiffany" : {"StartState":"LEFT_RUN", "x":100, "y":100},     \
-                            "Yuna"    : {"StartState":"RIGHT_RUN", "x":200, "y":200},  \
-                            "Sunny"   : {"StartState":"LEFT_STAND", "x":300, "y":300},   \
-                            "Yuri"    : {"StartState":"RIGHT_STAND", "x":400, "y":400},  \
-                            "Jessica" : {"StartState":"LEFT_RUN", "x":500, "y":500}      \
-                     }  '
-    player_state_table = {
-        "LEFT_RUN": Boy.LEFT_RUN,
-        "RIGHT_RUN": Boy.RIGHT_RUN,
-        "LEFT_STAND": Boy.LEFT_STAND,
-        "RIGHT_STAND": Boy.RIGHT_STAND
-    }
-    team_data = json.loads(team_data_text)
-
-    team = []
-    for name in team_data:
-        player = Boy()
-        player.name = name
-        player.x = team_data[name]['x']
-        player.y = team_data[name]['y']
-        player.state = player_state_table[team_data[name]['StartState']]
-        team.append(player)
-    return team
-
-    #team_data = json.loads(team_data_text)
-    team_data_file = open('team_data.txt', 'r')
-    team_data = json.load(team_data_file)
-    team_data_file.close()
-
 
 def handle_events():
     global running
@@ -146,8 +120,6 @@ def handle_events():
             else:
                for b in boys:
                    b.point = []
-
-
 
 def update(self):
     self.frame = (self.frame + 1) % 8
@@ -184,7 +156,7 @@ def update():
     delay(0.01)
 
 def exit():
-    close_canvas()
+    pass
 
 if __name__ == '__main__':
     main()
