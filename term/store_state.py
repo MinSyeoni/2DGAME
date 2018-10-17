@@ -1,6 +1,6 @@
 from pico2d import *
-from term import game_framework
-from term import tutorial_state
+import game_framework
+import tutorial_state
 
 class Store:
     def __init__(self):

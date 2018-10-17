@@ -1,26 +1,32 @@
 from pico2d import *
-from term import game_framework
-from term import tutorial_state
+import game_framework
+import tutorial_state
 import random
+from Ai import Ai
 from Player import Player
 from Bullet import Bullet
+
+name = "GameState"
+image = None
 
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
-        print(self.image)
     def draw(self):
         self.image.draw(400, 300)
 
 def enter():
-    global player,tutorial,bullets
+    global player,tutorial,bullets,ingame,ai
     player = Player()
+    ingame = Ingame()
+    ai = Ai()
     bullets = []
 
 def draw():
-    global player,tutorial,bullets
+    global player,tutorial,bullets,ingame,ai
     clear_canvas()
-    tutorial.draw()
+    ingame.draw()
+    ai.draw()
     player.draw()
 
     for loc in player.attack:
@@ -32,7 +38,7 @@ def draw():
 
 def handle_events():
     global running
-    global player
+    global player, ai
     global attack
     global bullets
 
@@ -71,9 +77,10 @@ def handle_events():
                 bullets.append(newBullet)
 
 def update():
-    global player
-    global bullets
+    global player,bullets, ai
+
     player.update()
+    ai.update()
     if player.state == 0:
         player.x -= 5
         if player.x < 100:

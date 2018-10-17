@@ -1,6 +1,6 @@
 from pico2d import *
-from term import game_framework
-from term import title_state
+import game_framework
+import title_state
 
 name = "StartState"
 logo = None
