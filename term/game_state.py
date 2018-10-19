@@ -2,7 +2,6 @@ from pico2d import *
 import game_framework
 import tutorial_state
 import random
-from Ai import Ai
 from Player import Player
 from Bullet import Bullet
 
@@ -14,6 +13,56 @@ class Ingame:
         self.image = load_image('image/background.png')
     def draw(self):
         self.image.draw(400, 300)
+
+class Ai:
+    def __init__(self):
+        self.x = random.randint(100,700)
+        self.y = random.randint(150,500)
+        self.speed = 0.05
+        self.frame = random.randint(0,7)
+        self.ai_image = load_image('image/ai_ani2.png')
+        self.goto = 0 # 0 업 1 다운
+        self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
+        self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
+        self.ai_goto = []
+        self.ai_attack_image = load_image('image/ai_attack.png')
+
+    def enter(self):
+        global player
+        player = Player()
+
+    def draw(self):
+        if self.state == 0 or (self.idle == 1 and self.goto != 2):
+            self.ai_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+        elif self.state == 1 or (self.idle == 2 and self.goto != 2) :
+            self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
+        elif self.idle == 1:
+            self.ai_image.clip_draw(self.frame * 100, 200, 100, 100, self.x, self.y)
+        elif self.idle == 2:
+            self.ai_image.clip_draw(self.frame * 100, 300, 100, 100, self.x, self.y)
+        else:
+            self.ai_image.clip_draw(self.frame*100, self.state * 100, 100, 100, self.x, self.y)
+
+        for ai_attack_image in self.ai_goto:
+            self.ai_attack_image.draw(ai_attack_image[0], ai_attack_image[1])
+
+    def update(self):
+        global player
+        self.frame = (self.frame + 1) % 8
+
+        if len(self.ai_goto) > 0:
+            (player.x,player.y) = self.ai_goto[0]
+            ai_gotoX, ai_gotoY = player.x - self.x, player.y - self.y
+            list = math.sqrt(ai_gotoX ** 2 + ai_gotoY ** 2)
+            if list > 0:
+                self.x += self.speed * ai_gotoX / list
+                self.y += self.speed * ai_gotoY / list
+                if ai_gotoX < 0 and self.x < player.x: self.x = player.x
+                if ai_gotoX > 0 and self.x > player.x: self.x = player.x
+                if ai_gotoY < 0 and self.y < player.y: self.y = player.y
+                if ai_gotoY > 0 and self.y > player.y: self.y = player.y
+            if(player.x, player.y) == (self.x,self.y):
+                del self.ai_goto[0]
 
 def enter():
     global player,tutorial,bullets,ingame,ai
@@ -52,6 +101,9 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(tutorial_state)
 
+        if event.type == SDL_KEYDOWN and event.type == SDL_KEYUP:
+            ai_goto = [(tx, 600 - 1 - ty)]
+
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽
                 player.state = 0
@@ -75,6 +127,7 @@ def handle_events():
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
+
 
 def update():
     global player,bullets, ai
@@ -103,7 +156,11 @@ def update():
     for member in bullets:
         member.update()
 
+    bullets = [b for b in bullets if not b.shouldDelete]
+
 def exit():
+    global image
+    del(image)
     close_canvas()
 
 if __name__ == '__main__':
