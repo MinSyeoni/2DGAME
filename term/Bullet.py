@@ -10,7 +10,7 @@ class Bullet:
         self.targetY = targetY
         self.speedX,self.speedY= (self.targetX - self.currX) / 10, (self.targetY - self.currY) / 10
 
-        self.speed = 2
+        self.speed = 5
         self.image = load_image('image/bullet.png')
 
         self.attack = [] # 총알 공격
@@ -23,8 +23,13 @@ class Bullet:
     def update(self):
         self.frame = (self.frame + 1) % 8
 
-        self.currX += self.speedX
-        self.currY += self.speedY
+        pointX, pointY = self.targetX - self.currX, self.targetY - self.currY
+        list = math.sqrt(pointX ** 2 + pointY ** 2)
+
+
+        self.currX += self.speed * pointX / list
+        self.currY += self.speed * pointY / list
+
 
         if self.currX > self.targetX - 5 and self.currX < self.targetX + 5:
             print(self, self.targetX, self.targetY, self.currX, self.currY)
