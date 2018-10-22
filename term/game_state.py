@@ -43,7 +43,6 @@ class Ai:
 
     def update(self, px, py):
         self.frame = (self.frame + 1) % 8
-        print("1")
 
         pointX, pointY = px - self.x, py - self.y
         list = math.sqrt(pointX ** 2 + pointY ** 2)
