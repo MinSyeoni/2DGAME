@@ -3,9 +3,7 @@ import game_framework
 import title_state
 import random
 import json
-import IDLE
-import RUN
-import SLEEP
+import time
 
 from enum import Enum
 
@@ -74,9 +72,6 @@ class Boy:
         if self.x < 0:
             self.state = self.RUN_LEFT
             self.x = 0
-        # if self.run_frames == 100:
-        #     self.state = self.IDLE_LEFT
-        #     self.stand_frames = 0
 
     def handle_left_stand(self):
         self.stand_frames += 1
@@ -89,9 +84,6 @@ class Boy:
         if self.x > 800:
             self.state = self.RUN_RIGHT
             self.x = 800
-        # if self.run_frames == 100:
-        #     self.state = self.IDLE_RIGHT
-        #     self.stand_frames = 0
 
     def handle_right_stand(self):
         self.stand_frames += 1
@@ -106,109 +98,40 @@ class Boy:
         IDLE_RIGHT: handle_right_stand
     }
 
-# Boy State
-IDLE, RUN, SLEEP = range(3)
-
-# Boy Event
-RIGHT_DOWN, LEFT_DOWN, RIGHT_UP, LEFT_UP, TIME_OUT = range(5)
-
-key_event_table = {
-    (SDL_KEYDOWN, SDLK_RIGHT): RIGHT_DOWN,
-    (SDL_KEYDOWN, SDLK_LEFT): LEFT_DOWN,
-    (SDL_KEYUP, SDLK_RIGHT): RIGHT_UP,
-    (SDL_KEYUP, SDLK_LEFT): LEFT_UP }
-next_state_table = {
-    IDLE: {RIGHT_UP: RUN, LEFT_UP: RUN, RIGHT_DOWN: RUN, LEFT_DOWN: RUN, TIME_OUT: SLEEP},
-    RUN: {RIGHT_UP: IDLE, LEFT_UP: IDLE, LEFT_DOWN: IDLE, RIGHT_DOWN: IDLE},
-    SLEEP: {LEFT_DOWN: RUN, RIGHT_DOWN: RUN}}
-
-def change_state(self,  state):
-    self.exit_state[self.cur_state](self)
-    self.enter_state[state](self)
-    self.cur_state = state
-
-enter_state = {IDLE: enter_IDLE, RUN: enter_RUN, SLEEP: enter_SLEEP}
-exit_state =  {IDLE: exit_IDLE,  RUN: exit_RUN,  SLEEP: exit_SLEEP}
-do_state =    {IDLE: do_IDLE,    RUN: do_RUN,    SLEEP: do_SLEEP}
-draw_state =  {IDLE: draw_IDLE,  RUN: draw_RUN,  SLEEP: draw_SLEEP}
-
-def update(self):
-    self.do_state[self.cur_state](self)
-    if len(self.event_que) > 0:
-        event = self.event_que.pop()
-        self.change_state(next_state_table[self.cur_state][event])
-
 def enter():
-    global boys, grass
-
-    boys = []
-    fh = open('boys_data.json')
-    data = json.load(fh)
-    for e in data['boys']:
-        b = Boy()
-        b.name = e['name']
-        b.x = e['x']
-        b.y = e['y']
-        b.speed = e['speed']
-        boys.append(b)
-
+    global boy, grass
+    boy = Boy()
     grass = Grass()
 
-def draw(self):
-    self.draw_state[self.cur_state](self)
+def handle_events():
+    global running
+    global point
+    global boy
+    events = get_events()
 
-def handle_event(self, event):
-    if (event.type, event.key) in key_event_table:
-        key_event = key_event_table[(event.type, event.key)]
-        if key_event == RIGHT_DOWN:
-            self.velocity += 1
-        elif key_event == LEFT_DOWN:
-            self.velocity -= 1
-        elif key_event == RIGHT_UP:
-            self.velocity -= 1
-        elif key_event == LEFT_UP:
-            self.velocity += 1
-        self.add_event(key_event)
+    for event in events:
+        if event.type == SDL_QUIT:
+            game_framework.quit()
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
+            game_framework.pop_state()
+        else:
+            boy.handle_state
 
-# def handle_events():
-#     global running
-#     global point
-#     global boys
-#     events = get_events()
-#
-#     for event in events:
-#         if event.type == SDL_QUIT:
-#             running = False
-#         if event.type == SDL_QUIT:
-#             game_framework.quit()
-#         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-#             game_framework.change_state(title_state)
-#         elif event.type == SDL_MOUSEBUTTONDOWN:
-#             if event.button == SDL_BUTTON_LEFT:
-#                 for b in boys:
-#                     tx, ty = event.x, 600 - 1- event.y
-#                     b.point += [(tx, ty)]
-#             else:
-#                for b in boys:
-#                    b.point = []
+def update(self):
+    self.frame = (self.frame + 1) % 8
+    self.handle_state[self.state](self)
 
-# def update(self):
-#     self.frame = (self.frame + 1) % 8
-#     self.handle_state[self.state](self)
+def draw():
+    global grass, boy
+    clear_canvas()
+    grass.draw()
+    boy.draw()
+    update_canvas()
 
-# def draw():
-#     global grass, boys
-#     clear_canvas()
-#     grass.draw()
-#     for b in boys:
-#         b.draw()
-#     update_canvas()
-
-# def update():
-#     global boys
-#     for b in boys:
-#         b.update()
-#     delay(0.01)
+def update():
+    global boy
+    boy.update()
+    delay(0.03)
 
 def exit():
     pass
