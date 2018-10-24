@@ -18,7 +18,8 @@ class Ai:
     def __init__(self):
         self.x = random.randint(100,700)
         self.y = random.randint(150,500)
-        self.speed = 2
+        self.speed = 0.1
+        self.timer = 0
         self.frame = random.randint(0,7)
         self.ai_image = load_image('image/ai_ani2.png')
         self.goto = 0 # 0 업 1 다운
@@ -42,17 +43,16 @@ class Ai:
             self.ai_attack_image.draw(ai_attack[0], ai_attack[1])
 
     def update(self, px, py):
-        self.frame = (self.frame + 1) % 8
+        self.timer+=1
+        if self.timer > 15:
+            self.frame = (self.frame + 1) % 8
+            self.timer = 0
 
         pointX, pointY = px - self.x, py - self.y
         list = math.sqrt(pointX ** 2 + pointY ** 2)
 
-        # self.x -= (self.x - px) / 20
-        # self.y -= (self.y - py) / 20
-
         self.x += self.speed * pointX / list
         self.y += self.speed * pointY / list
-
 
 def enter():
     global player,tutorial,bullets,ingame,ai
@@ -124,26 +124,25 @@ def update():
     player.update()
     ai.update(player.x,player.y)
 
-
     if player.state == 0:
-        player.x -= 5
+        player.x -= 1
         if player.x < 100:
             player.x = 100
     elif player.state == 1:
-        player.x += 5
+        player.x += 1
         if player.x >700:
             player.x = 700
 
     if player.goto == 0:
-        player.y += 5
+        player.y += 1
         if player.y > 520:
             player.y = 520
     elif player.goto == 1:
-        player.y -= 5
+        player.y -= 1
         if player.y < 150:
             player.y = 150
 
-    delay(0.05)
+    #delay(0.05)
 
     for member in bullets:
         member.update()

@@ -7,6 +7,7 @@ class Player:
         self.x = random.randint(100,700)
         self.y = random.randint(150,500)
         self.speed = 2
+        self.timer = 0
         self.frame = random.randint(0,7)
         self.player_image = load_image('image/run_stand_ani.png')
         self.goto = 0 # 0 업 1 다운
@@ -32,7 +33,10 @@ class Player:
             self.attack_image.draw(attack_image[0], attack_image[1])
 
     def update(self):
-        self.frame = (self.frame + 1) % 8
+        self.timer += 1
+        if self.timer > 15:
+            self.frame = (self.frame + 1) % 8
+            self.timer = 0
 
         if len(self.attack) > 0:
             (tx,ty) = self.attack[0]
