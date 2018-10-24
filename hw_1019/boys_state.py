@@ -22,6 +22,7 @@ next_state_table = {
     IDLE: {RIGHT_UP: RUN, LEFT_UP: RUN, RIGHT_DOWN: RUN, LEFT_DOWN: RUN, TIME_OUT: SLEEP},
     RUN: {RIGHT_UP: IDLE, LEFT_UP: IDLE, LEFT_DOWN: IDLE, RIGHT_DOWN: IDLE},
     SLEEP: {LEFT_DOWN: RUN, RIGHT_DOWN: RUN}}
+
 class Grass:
     def __init__(self):
         self.image = load_image('../image/grass.png')
