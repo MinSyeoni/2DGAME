@@ -18,6 +18,7 @@ class Ai:
     def __init__(self):
         self.x = random.randint(100,700)
         self.y = random.randint(150,500)
+        self.attackX = self.x
         self.speed = 0.1
         self.timer = 0
         self.frame = random.randint(0,7)
@@ -27,24 +28,27 @@ class Ai:
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
         self.ai_attack = [] #ai 공격
         self.ai = [(self.x,self.y)] #ai 좌표
-        self.ai_attack_image = load_image('image/ai_attack.png')
+        self.attack_timer = 0
+        self.ai_attack_image = load_image('image/ai_attack2.png')
 
     def enter(self):
         global player
         player = Player()
 
     def draw(self, px):
+        global attackX
         if self.x > px:
             self.ai_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+            self.ai_attack_image.clip_draw(self.frame * 60, 0, 60, 60, self.attackX, self.y)
         else:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
-
-        for ai_attack in self.ai_attack:
-            self.ai_attack_image.draw(ai_attack[0], ai_attack[1])
+            self.ai_attack_image.clip_draw(self.frame * 60, 60, 60, 60, self.attackX, self.y)
 
     def update(self, px, py):
+        global attackX
+
         self.timer+=1
-        if self.timer > 15:
+        if self.timer > 50:
             self.frame = (self.frame + 1) % 8
             self.timer = 0
 
@@ -53,6 +57,8 @@ class Ai:
 
         self.x += self.speed * pointX / list
         self.y += self.speed * pointY / list
+
+        self.attackX += 0.5
 
 def enter():
     global player,tutorial,bullets,ingame,ai
@@ -90,9 +96,6 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.change_state(tutorial_state)
-
-        #tx, ty = event.x, 600 - 1 - event.y
-           # ai += [(tx, ty)]
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽
@@ -141,8 +144,6 @@ def update():
         player.y -= 1
         if player.y < 150:
             player.y = 150
-
-    #delay(0.05)
 
     for member in bullets:
         member.update()
