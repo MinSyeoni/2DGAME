@@ -29,7 +29,8 @@ class Ai:
         self.ai_attack = [] #ai 공격
         self.ai = [(self.x,self.y)] #ai 좌표
         self.attack_timer = 0
-        self.ai_attack_image = load_image('image/ai_attack2.png')
+        self.ai_attack_image1 = load_image('image/ai_attack.png')
+        self.ai_attack_image2 = load_image('image/ai_attack2.png')
 
     def enter(self):
         global player
@@ -39,10 +40,10 @@ class Ai:
         global attackX
         if self.x > px:
             self.ai_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
-            self.ai_attack_image.clip_draw(self.frame * 60, 0, 60, 60, self.attackX, self.y)
+            self.ai_attack_image1.draw(self.attackX, self.y)
         else:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
-            self.ai_attack_image.clip_draw(self.frame * 60, 60, 60, 60, self.attackX, self.y)
+            self.ai_attack_image2.draw(self.attackX, self.y)
 
     def update(self, px, py):
         global attackX
@@ -57,8 +58,11 @@ class Ai:
 
         self.x += self.speed * pointX / list
         self.y += self.speed * pointY / list
-
-        self.attackX += 0.5
+        
+        if self.x > px:
+            self.attackX -= 0.5
+        if self.x < px:
+            self.attackX += 0.5
 
 def enter():
     global player,tutorial,bullets,ingame,ai
