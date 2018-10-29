@@ -26,7 +26,7 @@ class Ai:
         self.goto = 0 # 0 업 1 다운
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
-        self.ai_attack = [] #ai 공격
+        self.attack_count = 0 #ai 공격
         self.ai = [(self.x,self.y)] #ai 좌표
         self.attack_timer = 0
         self.ai_attack_image1 = load_image('image/ai_attack.png')
@@ -51,6 +51,7 @@ class Ai:
         self.timer+=1
         if self.timer > 50:
             self.frame = (self.frame + 1) % 8
+            self.attack_count += 1
             self.timer = 0
 
         pointX, pointY = px - self.x, py - self.y
@@ -58,11 +59,12 @@ class Ai:
 
         self.x += self.speed * pointX / list
         self.y += self.speed * pointY / list
-        
-        if self.x > px:
-            self.attackX -= 0.5
-        if self.x < px:
-            self.attackX += 0.5
+
+        if self.attack_count > 0:
+            if self.x > px:
+                self.attackX -= 0.5
+            if self.x < px:
+                self.attackX += 0.5
 
 def enter():
     global player,tutorial,bullets,ingame,ai
