@@ -4,6 +4,8 @@ import tutorial_state
 import random
 from Player import Player
 from Bullet import Bullet
+from Life import Life
+from Coin import Coin
 
 name = "GameState"
 image = None
@@ -67,18 +69,22 @@ class Ai:
                 self.attackX += 0.5
 
 def enter():
-    global player,tutorial,bullets,ingame,ai
+    global player,tutorial,bullets,ingame,ai,life,coin
     player = Player()
     ingame = Ingame()
+    life = Life()
+    coin = Coin()
     ai = Ai()
     bullets = []
 
 def draw():
-    global player,tutorial,bullets,ingame,ai
+    global player,tutorial,bullets,ingame,ai,coin
     clear_canvas()
     ingame.draw()
     ai.draw(player.x)
     player.draw()
+    life.draw()
+    coin.draw()
 
     for loc in player.attack:
         player.attack_image.draw(loc[0], loc[1])
