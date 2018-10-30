@@ -30,21 +30,18 @@ def handle_events():
     global bullets
 
     events = get_events()
-
+    print(player.x,player.y)
     for event in events:
         if event.type == SDL_QUIT:
             game_framework.quit()
         else :
             if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
-            elif 350< player.x <400 and 450 < player.y < 520:
-                game_framework.push_state(store_state)
-            elif 650 < player.x < 700 and 300 < player.y <350:
+            elif 350< player.x < 430 and 450 < player.y < 530:
+                game_framework.change_state(store_state)
+            elif 650 < player.x < 750 and 300 < player.y <350:
                 game_framework.change_state(game_state)
 
-        # if event.type == SDL_QUIT:
-        #     running = False
-        #
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:     ##왼쪽
                 player.state = 0
@@ -104,16 +101,13 @@ def update():
         if player.y < 150:
             player.y = 150
 
-   # delay(0.05)
-
     for member in bullets:
         member.update()
 
     bullets = [b for b in bullets if not b.shouldDelete]
 
 def exit():
-    global image
-    del(image)
+    pass
 
 if __name__ == '__main__':
     main()

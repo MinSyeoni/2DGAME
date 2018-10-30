@@ -94,13 +94,13 @@ def handle_events():
     global bullets
 
     events = get_events()
-
+    print(player.x,player.y)
     for event in events:
         if event.type == SDL_QUIT:
             running = False
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
+        elif 99 < player.x < 150 and 300 < player.y < 350:
             game_framework.change_state(tutorial_state)
 
         if event.type == SDL_KEYDOWN:
@@ -157,9 +157,7 @@ def update():
     bullets = [b for b in bullets if not b.shouldDelete]
 
 def exit():
-    global image
-    del(image)
-    close_canvas()
+    pass
 
 if __name__ == '__main__':
     main()
