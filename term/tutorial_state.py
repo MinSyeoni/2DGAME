@@ -38,9 +38,9 @@ def handle_events():
             if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
             elif 350< player.x <400 and 450 < player.y < 520:
-                game_framework.change_state(store_state)
+                game_framework.push_state(store_state)
             elif 650 < player.x < 700 and 300 < player.y <350:
-                game_framework.change_state(game_state)
+                game_framework.push_state(game_state)
 
         # if event.type == SDL_QUIT:
         #     running = False
@@ -87,23 +87,24 @@ def update():
     global bullets
     player.update()
     if player.state == 0:
-        player.x -= 5
+        player.x -= 1
         if player.x < 100:
             player.x = 100
     elif player.state == 1:
-        player.x += 5
+        player.x += 1
         if player.x >700:
             player.x = 700
 
     if player.goto == 0:
-        player.y += 5
+        player.y += 1
         if player.y > 520:
             player.y = 520
     elif player.goto == 1:
-        player.y -= 5
+        player.y -= 1
         if player.y < 150:
             player.y = 150
-    delay(0.05)
+
+   # delay(0.05)
 
     for member in bullets:
         member.update()
