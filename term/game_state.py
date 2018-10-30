@@ -26,7 +26,7 @@ class Ai:
         self.goto = 0 # 0 업 1 다운
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
-        self.attack_count = 0 #ai 공격
+        self.attack_count = 0#ai 공격
         self.ai = [(self.x,self.y)] #ai 좌표
         self.attack_timer = 0
         self.ai_attack_image1 = load_image('image/ai_attack.png')

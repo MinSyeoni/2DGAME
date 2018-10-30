@@ -40,7 +40,7 @@ def handle_events():
             elif 350< player.x <400 and 450 < player.y < 520:
                 game_framework.push_state(store_state)
             elif 650 < player.x < 700 and 300 < player.y <350:
-                game_framework.push_state(game_state)
+                game_framework.change_state(game_state)
 
         # if event.type == SDL_QUIT:
         #     running = False
