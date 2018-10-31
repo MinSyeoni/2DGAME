@@ -100,7 +100,6 @@ def handle_events():
     global bullets
 
     events = get_events()
-    print(player.x,player.y)
     for event in events:
         if event.type == SDL_QUIT:
             running = False
