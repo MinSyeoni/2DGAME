@@ -2,6 +2,8 @@ from pico2d import *
 import game_framework
 import tutorial_state
 from Player import Player
+from Coin import Coin
+from Life import Life
 
 name = "StoreState"
 image = None
@@ -16,12 +18,15 @@ class Store:
 def enter():
     global store
     global player
+    global life
+    global coin
+    coin = Coin()
+    life = Life()
     store = Store()
     player = Player()
 
 def handle_events():
     global player
-    print(player.x, player.y)
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -51,10 +56,14 @@ def handle_events():
 def draw():
     global store
     global player
+    global coin
+    global life
 
     clear_canvas()
     store.draw()
     player.draw()
+    coin.draw()
+    life.draw()
     update_canvas()
 
 def update():
