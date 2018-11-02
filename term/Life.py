@@ -8,7 +8,7 @@ class Life:
 
     def draw(self):
         self.image.draw(500,550)
-        self.font.draw(530, 550, '%d ' % (self.life))  # 생명 출력
+        self.font.draw(530, 550, '%d ' % (self.life),(255,0,0))  # 생명 출력
 
     def update(self):
         pass

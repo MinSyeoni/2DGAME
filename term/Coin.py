@@ -8,7 +8,7 @@ class Coin:
 
     def draw(self):
         self.image.draw(600,550)
-        self.font.draw(650, 550, '%d ' % (self.coin),) #코인 출력
+        self.font.draw(650, 550, '%d ' % (self.coin),(250,250,0)) #코인 출력
 
     def update(self):
         pass
