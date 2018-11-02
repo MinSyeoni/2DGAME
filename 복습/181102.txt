@@ -1,0 +1,56 @@
+잘짠 프로그래밍은 요구사항에 맞게 바로 변동이 가능한 것
+
+idle, run, sleep 으로 스테이트 나눠줌
+
+self.set_state(IdleState)를 만들어줌 보이클레스안에
+객체같아보이지만 클래스 클래스의 함수를 부를 수 있다.
+def set_state(self,state):
+state.enter:등등 부르는 형식
+
+class IdleState:
+def enter(boy):
+boy.time=time.time()
+...
+스테틱메소드로했다.
+
+구조만 다르게 각각의 클래스를 만들어서 함수를 만듦
+
+if self.state==state:return
+
+if self.state and slef.state.exit:
+self.....
+
+def update()
+for o in all_objects()
+o.update
+draw()
+똑같이하고
+o.draw()
+
+import game_world 한 이유는 스스로 삭제하도록하려고
+game_world.add_object(grass,0)
+game_world.add_object(boy,1)
+
+def update필요
+
+def draw안에
+글로벌 글레스 보이 글레스드로우 보이드로우 대신에 game_world.draw()로 대신
+
+space_down추가해서 range(6)
+
+def fire_ball(self):
+ball=Ball(self.x,self.y,self.dx+1,0)
+-> mag=1.5 if self.dir == 1 else -1.5
+ballSpeed=mag*self.speed+self.dx
+ball=Ball(self.x,self.y,ballSpeed,0)
+game_world.add_object(ball,1)
+
+화면밖으로 나가는 것을 관리해준다
+
+x공기저항 y중력
+
+self.y -= 2*height
+
+\쓰고 다음줄로 이어진다는걸 보여줘야함
+
+enter_down추가해주기 큰공
