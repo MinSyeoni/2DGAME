@@ -16,8 +16,12 @@ class Player:
         self.attack = [] # 총알 공격
         self.attack_image = load_image('image/attack.png')
 
-    def draw(self):
+    def draw_bb(self):
+        draw_rectangle(*self.get_bb())
+    def get_bb(self):
+            return self.x - 50, self.y - 50, self.x + 50, self.y + 50
 
+    def draw(self):
         if self.state == 0 or (self.idle == 1 and self.goto != 2):
             self.player_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
         elif self.state == 1 or (self.idle == 2 and self.goto != 2) :

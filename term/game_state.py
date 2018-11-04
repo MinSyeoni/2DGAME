@@ -6,67 +6,18 @@ from Player import Player
 from Bullet import Bullet
 from Life import Life
 from Coin import Coin
+from Ai import Ai
 
 name = "GameState"
 image = None
+global Boundingbox
+Boundingbox = 0
 
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
     def draw(self):
         self.image.draw(400, 300)
-
-class Ai:
-    def __init__(self):
-        self.x = random.randint(100,700)
-        self.y = random.randint(150,500)
-        self.attackX = self.x
-        self.speed = 0.1
-        self.timer = 0
-        self.frame = random.randint(0,7)
-        self.ai_image = load_image('image/ai_ani2.png')
-        self.goto = 0 # 0 업 1 다운
-        self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
-        self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
-        self.attack_count = 0#ai 공격
-        self.ai = [(self.x,self.y)] #ai 좌표
-        self.attack_timer = 0
-        self.ai_attack_image1 = load_image('image/ai_attack.png')
-        self.ai_attack_image2 = load_image('image/ai_attack2.png')
-
-    def enter(self):
-        global player
-        player = Player()
-
-    def draw(self, px):
-        global attackX
-        if self.x > px:
-            self.ai_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
-            self.ai_attack_image1.draw(self.attackX, self.y)
-        else:
-            self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
-            self.ai_attack_image2.draw(self.attackX, self.y)
-
-    def update(self, px, py):
-        global attackX
-
-        self.timer+=1
-        if self.timer > 50:
-            self.frame = (self.frame + 1) % 8
-            self.attack_count += 1
-            self.timer = 0
-
-        pointX, pointY = px - self.x, py - self.y
-        list = math.sqrt(pointX ** 2 + pointY ** 2)
-
-        self.x += self.speed * pointX / list
-        self.y += self.speed * pointY / list
-
-        if self.attack_count > 0:
-            if self.x > px:
-                self.attackX -= 0.5
-            if self.x < px:
-                self.attackX += 0.5
 
 def enter():
     global player,tutorial,bullets,ingame,ai,life,coin
@@ -77,25 +28,9 @@ def enter():
     ai = Ai()
     bullets = []
 
-def draw():
-    global player,tutorial,bullets,ingame,ai,coin
-    clear_canvas()
-    ingame.draw()
-    ai.draw(player.x)
-    player.draw()
-    life.draw()
-    coin.draw()
-
-    for loc in player.attack:
-        player.attack_image.draw(loc[0], loc[1])
-
-    for member in bullets:
-        member.draw()
-    update_canvas()
-
 def handle_events():
     global running
-    global player, ai,tx,ty
+    global player,tx,ty
     global attack
     global bullets
 
@@ -132,8 +67,44 @@ def handle_events():
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
 
+def collide(a, b):
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b : return False
+    if right_a < left_b : return False
+    if top_a < bottom_b : return False
+    if bottom_a > top_b : return False
+
+    return True
+
+def draw():
+    global player,tutorial,bullets,ingame,ai,coin,Boundingbox
+    clear_canvas()
+    ingame.draw()
+    ai.draw(player.x)
+    player.draw()
+    life.draw()
+    coin.draw()
+
+    for loc in player.attack:
+        player.attack_image.draw(loc[0], loc[1])
+
+    for member in bullets:
+        member.draw()
+
+    if Boundingbox == 1:
+        player.draw_bb()
+        for member in bullets:
+            member.draw_bb()
+        for member in ai:
+            member.draw_bb()
+        for member in player:
+            member.draw_bb()
+    update_canvas()
+
 def update():
-    global player,bullets, ai
+    global player,bullets, ai,Boundingbox
 
     player.update()
     ai.update(player.x,player.y)

@@ -3,7 +3,6 @@ from pico2d import *
 class Bullet:
     def __init__(self,playerX, playerY, targetX, targetY):
         self.frame = 0
-
         self.currX = playerX
         self.currY = playerY
         self.targetX = targetX
@@ -16,8 +15,12 @@ class Bullet:
         self.attack = [] # 총알 공격
         self.shouldDelete = False
 
-    def draw(self):
+    def draw_bb(self):
+        draw_rectangle(*self.get_bb())
+    def get_bb(self):
+            return self.x - 12.5, self.y - 12.5, self.x + 12.5, self.y + 12.5
 
+    def draw(self):
         self.image.clip_draw(self.frame*25, 0, 25, 25, self.currX, self.currY)
 
     def update(self):
