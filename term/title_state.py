@@ -7,12 +7,11 @@ name = "TitleState"
 image = None
 
 def enter():
-    global image
+    global image,sound
     image = load_image('image/title.png')
 
 def exit():
-    global image
-    del(image)
+    pass
 
 def handle_events():
     events = get_events()
