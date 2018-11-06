@@ -1,0 +1,60 @@
+<충돌처리>
+레이어는 마음대로하면 된다
+game_world(,)에 숫자 말고 레이어로 바꿔준다.
+
+레이어값을 주면 특정 레이어의 제너레이트를 호출 할 수 있는 함수를 만든다.
+
+바운딩박스를 추가해준다. 충돌체크를 하기 위해서
+get_bb 충돌체크가 되는 대상에다가 추가해준다.
+사각형을 표현하게 한다. 이것이 바운딩박스가 된다.
+상속을 받던 다른 클래스를 쓰던 상관없다.
+
+스피드를 결정할때 mag *= random.uniform(0.5,1.0) 0.5~1.0랜덤값 곱한다.
+
+game_world에 collides와 update를 추가해준다. 
+true or false
+string함수 중에 startswith가 있는데 무엇으로 시작하는지 안하는지 여부를 알려준다.
+
+,로 연결된것을 튜플이라 한다
+get_bb에서 튜플로 리턴을 받는다
+
+boys_state안에
+collides에서 if la>rb:return False로 수정한다.
+사방으로 충돌체크가 되는지 확인 할 수 있다.
+게임월드를 업데이트 하면 위치가 다 업데이트되니까 업데이트 안에 넣어준다.
+game_world에서 공을 삭제하고 그 다음 레이어에 있는지 확인하는데 삭제를 했는데 다음 레이어를 알아볼 필요가 없으니까 빠져나가도록 break를 넣어준다
+
+draws_bounding_box = False이거만 추가한다. 이미지를 쓸 때 모두 다 쓰는게 아니라 빈공간도 있기 때문에 config.py로 추가해준다.
+원래 boystate에다가 draw(self)에 
+if config.draws_bounding_box:
+draw_rectangle(*self.get_bb())
+*를 안쓰고 그냥 넘겨주면 rectangle입장에선 인자가 하나들어왔고 하나가 네개짜리 튜플이다. 튜플앞에 *을 붙여주면 그걸 인지한다.그냥 값 리스트가 된다.
+ball에도 같이 추가해준다.
+draws_bounding_box를 True로 바꿔주면 바운딩박스가 보인다.
+
+실제 바운딩박스 값 바꾼다. idle, run, sleep각각 값을 준다
+
+어떤객체가 get_bb에서 변수나 함수를 가지고 있다면 ture/false를 뜻한다
+===========================================
+<맵스크롤링>
+이미지가 너무 크면 갭과 타일로쓴다 조각들에게 번호를 매긴다
+좌하단 좌표가 어딘지만 알면 쉽다
+
+스크롤링이란 이미지 일부만을 디스플레이 화면에서 움직이면서 나타내는것.나머지 스크린. 가려진다.
+
+x-canvas_with//2, y-canvas_height//2 정중앙일때
+화면을 잘라서 그린다 800x600에
+캐릭터 화면상에선 고정이지만 speed가 주어지면 달라진다
+
+화면 밖을 벗어난다면 비우게 하거나 자신이 정해야한다.
+
+clamp 함수를 쓰면 최대최소를 쉽게 할 수 있다.
+
+import를 수정해준다. from background import를 가져다가 그걸 Background로 쓴다. create_world에서 수정 안해도된다.
+
+update에서백그라운드를 계속 업데이트한다. 캐릭터의 x,y좌표를 받아서 빼고 window x,y로 한다.
+
+화면상에서 더 이동 하도록 하려면 어떻게 해야할까?!
+self.x = clamp(0, self.x, self.bg.w) self.y = clamp(0, self.y, self.bg.h)
+전부 다 갈 수 있게 해준다.
+draw에 self.x - self.bg.window_left, self.y - self.bg.window_bottom로 수정하면 더 밑에까지 내려간다.
