@@ -2,6 +2,8 @@ from pico2d import *
 import random
 import time
 import game_world
+import config
+import scroll_state
 from ball import Ball
 
 # Boy State
@@ -30,7 +32,7 @@ class IdleState:
     def update(boy):
         boy.frame = (boy.frame + 1) % 8
         elapsed = time.time() - boy.time
-        if elapsed > 10.0:
+        if elapsed > 2.0:
             boy.set_state(SleepState)
     @staticmethod
     def draw(boy):
@@ -81,6 +83,7 @@ next_state_table = {
     SleepState: { LEFT_DOWN: RunState, RIGHT_DOWN: RunState }
 }
 
+
 class Boy:
     image = None
 
@@ -98,8 +101,21 @@ class Boy:
         if Boy.image == None:
             Boy.image = load_image('../image/animation_sheet.png')
 
+    def get_bb(self):
+        if self.state == IdleState:
+            return self.x - 15, self.y - 40, self.x + 15, self.y + 40
+        if self.state == RunState:
+            return self.x - 20, self.y - 40, self.x + 20, self.y + 40
+        if self.state == SleepState:
+            if self.dir == 1:
+                return self.x - 70, self.y - 40, self.x + 10, self.y
+            else:
+                return self.x - 10, self.y - 40, self.x + 70, self.y
+
     def draw(self):
         self.state.draw(self)
+        if config.draws_bounding_box:
+            draw_rectangle(*self.get_bb())
 
     def update(self):
         self.state.update(self)
@@ -126,7 +142,7 @@ class Boy:
                 if self.dx > 0: self.dir = 1
 
             self.set_state(IdleState if self.dx == 0 else RunState)
-            print(self.dx, self.dir)
+            # print(self.dx, self.dir)
     def set_state(self, state):
         if self.state == state: return
 
@@ -137,12 +153,12 @@ class Boy:
 
         if self.state.enter:
             self.state.enter(self)
-
     def fire_ball(self, big):
         mag = 1.5 if self.dir == 1 else -1.5
+        mag *= random.uniform(0.5, 1.0)
         ballSpeed = mag * self.speed + self.dx
 
         ySpeed = 2 * self.speed * (1 + random.random())
         if big: ySpeed *= 0.75
-        ball = Ball(big, self.x, self.y, ballSpeed, ySpeed)
+        ball = Ball(big, self.x, self.y + 70, ballSpeed, ySpeed)
         game_world.add_object(ball, game_world.layer_obstacle)

@@ -40,8 +40,23 @@ def draw():
     game_world.draw()
     update_canvas()
 
+def collides(a, b):
+    if not hasattr(a, 'get_bb'): return False
+    if not hasattr(b, 'get_bb'): return False
+
+    la, ba, ra, ta = a.get_bb()
+    lb, bb, rb, tb = b.get_bb()
+    if la > rb: return False
+    if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
+    return True
 def update():
     game_world.update()
+    for ball in game_world.objects_at_layer(game_world.layer_obstacle):
+        if collides(boy, ball):
+            print("Collision:", ball)
+            game_world.remove_object(ball)
     delay(0.03)
 
 # fill here
