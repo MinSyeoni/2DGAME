@@ -3,9 +3,13 @@ import game_framework
 from boy import Boy
 import game_world
 
-# from enum import Enum
+DEL_MARGIN = 25
+WIND_RESISTANCE = 0.99#7
+BOUNCE_RESISTANCE = 0.70
+GRAVITY = 10 / 33
+BOUNCING_GROUND = 62
 
-# BOYS_COUNT = 1000
+MIN_MOVE = 2
 
 class Grass:
     def __init__(self):
@@ -16,8 +20,20 @@ class Grass:
     def update(self):
         pass
 
+class Stick:
+    def __init__(self):
+        self.image = load_image('../image/stick.png')
+        print(self.image)
+        self.x=100
+        self.y=170
+    def draw(self):
+        self.image.draw(self.x,self.y)
+    def update(self):
+        pass
+
 def handle_events():
     global boy
+    global stick
     events = get_events()
     for e in events:
         if e.type == SDL_QUIT:
@@ -26,14 +42,17 @@ def handle_events():
             game_framework.pop_state()
         else:
             boy.handle_event(e)
+        if e.type == SDL_MOUSEBUTTONDOWN:
 
 def enter():
-    global boy, grass
+    global boy, grass,stick
 
     boy = Boy()
     grass = Grass()
+    stick = Stick()
     game_world.add_object(grass, game_world.layer_bg)
     game_world.add_object(boy, game_world.layer_player)
+    game_world.add_object(stick, game_world.layer_stick)
 
 def draw():
     clear_canvas()
@@ -58,8 +77,6 @@ def update():
             print("Collision:", ball)
             game_world.remove_object(ball)
     delay(0.03)
-
-# fill here
 
 def exit():
     game_world.clear()

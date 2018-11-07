@@ -89,8 +89,9 @@ class Boy:
 
     def __init__(self):
         print("Creating..")
-        self.x = random.randint(0, 200)
+        # self.x = random.randint(0, 200)
         # self.y = random.randint(90, 550)
+        self.x = 100
         self.y = 90
         self.speed = random.uniform(3.0, 5.0)
         self.frame = random.randint(0, 7)
@@ -128,18 +129,18 @@ class Boy:
                 if self.state == SleepState:
                     self.set_state(IdleState)
                 return
-            if key_event == RIGHT_DOWN:
-                self.dx += self.speed
-                if self.dx > 0: self.dir = 1
-            elif key_event == LEFT_DOWN:
-                self.dx -= self.speed
-                if self.dx < 0: self.dir = 0
-            elif key_event == RIGHT_UP:
-                self.dx -= self.speed
-                if self.dx < 0: self.dir = 0
-            elif key_event == LEFT_UP:
-                self.dx += self.speed
-                if self.dx > 0: self.dir = 1
+            # if key_event == RIGHT_DOWN:
+            #     self.dx += self.speed
+            #     if self.dx > 0: self.dir = 1
+            # elif key_event == LEFT_DOWN:
+            #     self.dx -= self.speed
+            #     if self.dx < 0: self.dir = 0
+            # elif key_event == RIGHT_UP:
+            #     self.dx -= self.speed
+            #     if self.dx < 0: self.dir = 0
+            # elif key_event == LEFT_UP:
+            #     self.dx += self.speed
+            #     if self.dx > 0: self.dir = 1
 
             self.set_state(IdleState if self.dx == 0 else RunState)
             # print(self.dx, self.dir)
