@@ -1,4 +1,5 @@
 from pico2d import *
+import config
 
 class Bullet:
     def __init__(self,playerX, playerY, targetX, targetY):
@@ -15,13 +16,17 @@ class Bullet:
         self.attack = [] # 총알 공격
         self.shouldDelete = False
 
-    def draw_bb(self):
-        draw_rectangle(*self.get_bb())
-    def get_bb(self):
-            return self.x - 12.5, self.y - 12.5, self.x + 12.5, self.y + 12.5
-
     def draw(self):
         self.image.clip_draw(self.frame*25, 0, 25, 25, self.currX, self.currY)
+        if config.draws_bounding_box:
+            draw_rectangle(*self.get_bb())
+
+    def get_bb(self):
+            return self.currX - 12.5, self.currY - 12.5, self.currX + 12.5, self.currY + 12.5
+
+    def draw_bb(self):
+        if config.draws_bounding_box:
+            draw_rectangle(*self.get_bb())
 
     def update(self):
         self.timer += 1

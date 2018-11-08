@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import tutorial_state
+import game_world
 import random
 from Player import Player
 from Bullet import Bullet
@@ -103,9 +104,21 @@ def draw():
             member.draw_bb()
     update_canvas()
 
+def collides(a, b):
+    if not hasattr(a, 'get_bb'): return False
+    if not hasattr(b, 'get_bb'): return False
+
+    la, ba, ra, ta = a.get_bb()
+    lb, bb, rb, tb = b.get_bb()
+    if la > rb: return False
+    if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
+    return True
+
 def update():
     global player,bullets, ai,Boundingbox
-
+    game_world.update()
     player.update()
     ai.update(player.x,player.y)
 
@@ -129,6 +142,11 @@ def update():
 
     for member in bullets:
         member.update()
+
+    #for bullets in game_world.objects_at_layer(game_world.layer_obstacle):
+    if collides(ai, bullets):
+        print("Collision:", bullets)
+        game_world.remove_object(bullets)
 
     bullets = [b for b in bullets if not b.shouldDelete]
 

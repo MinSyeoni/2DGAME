@@ -1,6 +1,6 @@
 from pico2d import *
-
 import random
+import config
 
 class Player:
     def __init__(self):
@@ -19,7 +19,7 @@ class Player:
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
     def get_bb(self):
-            return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+            return self.x - 30, self.y - 50, self.x + 30, self.y + 35
 
     def draw(self):
         if self.state == 0 or (self.idle == 1 and self.goto != 2):
@@ -35,6 +35,9 @@ class Player:
 
         for attack_image in self.attack:
             self.attack_image.draw(attack_image[0], attack_image[1])
+
+        if config.draws_bounding_box:
+            draw_rectangle(*self.get_bb())
 
     def update(self):
         self.timer += 1

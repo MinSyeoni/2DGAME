@@ -1,6 +1,7 @@
 from pico2d import *
 import random
 import Player
+import config
 
 class Ai:
     def __init__(self):
@@ -29,7 +30,7 @@ class Ai:
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
     def get_bb(self):
-            return self.x - 50, self.y - 50, self.x + 50, self.y + 50
+            return self.x - 20, self.y - 50, self.x + 20, self.y + 50
 
     def draw(self, px):
         global attackX
@@ -39,6 +40,8 @@ class Ai:
         else:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
             self.ai_attack_image2.draw(self.attackX, self.y)
+        if config.draws_bounding_box:
+            draw_rectangle(*self.get_bb())
 
     def update(self, px, py):
         global attackX
