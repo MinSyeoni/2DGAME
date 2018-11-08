@@ -2,6 +2,8 @@ from pico2d import *
 import game_framework
 from boy import Boy
 import game_world
+from math import atan2
+from math import sqrt
 
 DEL_MARGIN = 25
 WIND_RESISTANCE = 0.99#7
@@ -24,25 +26,16 @@ class Stick:
     def __init__(self):
         self.image = load_image('../image/stick.png')
         print(self.image)
-        self.x=100
-        self.y=170
+        self.x= boy.x
+        self.y= boy.y+100
+        self.rad = 0
     def draw(self):
-        self.image.draw(self.x,self.y)
+        self.image.clip_composite_draw(0, 0, 16, 77,
+            self.rad, '', self.x , self.y, 20, 100)
+        # self.image.draw(self.x,self.y)
+
     def update(self):
         pass
-
-def handle_events():
-    global boy
-    global stick
-    events = get_events()
-    for e in events:
-        if e.type == SDL_QUIT:
-            game_framework.quit()
-        elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
-            game_framework.pop_state()
-        else:
-            boy.handle_event(e)
-        if e.type == SDL_MOUSEBUTTONDOWN:
 
 def enter():
     global boy, grass,stick
@@ -70,6 +63,7 @@ def collides(a, b):
     if ta < bb: return False
     if ba > tb: return False
     return True
+
 def update():
     game_world.update()
     for ball in game_world.objects_at_layer(game_world.layer_obstacle):
@@ -77,6 +71,26 @@ def update():
             print("Collision:", ball)
             game_world.remove_object(ball)
     delay(0.03)
+
+def handle_events():
+     global boy
+     global stick
+     events = get_events()
+     for event in events:
+         if event.type == SDL_QUIT:
+             game_framework.quit()
+         elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
+             game_framework.pop_state()
+         else:
+             boy.handle_event(event)
+         if event.type == SDL_MOUSEMOTION:
+            tx, ty = event.x, 600 - 1 - event.y
+            boy.getX = -(stick.x-tx)/150
+            boy.getY = -(stick.y-ty)/150
+            stick.rad = math.atan2(stick.x-tx, ty-stick.y)
+
+        # if e.type == SDL_MOUSEBUTTONDOWN:
+
 
 def exit():
     game_world.clear()

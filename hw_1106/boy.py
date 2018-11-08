@@ -99,6 +99,7 @@ class Boy:
         self.set_state(IdleState)
         self.dir = 1
         self.dx = 0
+        self.getX,self.getY = 0,0
         if Boy.image == None:
             Boy.image = load_image('../image/animation_sheet.png')
 
@@ -154,12 +155,12 @@ class Boy:
 
         if self.state.enter:
             self.state.enter(self)
-    def fire_ball(self, big):
-        mag = 1.5 if self.dir == 1 else -1.5
-        mag *= random.uniform(0.5, 1.0)
-        ballSpeed = mag * self.speed + self.dx
 
-        ySpeed = 2 * self.speed * (1 + random.random())
+    def fire_ball(self, big):
+
+        ballSpeed = self.getX * self.speed + self.dx
+
+        ySpeed = 2 * self.speed * self.getY
         if big: ySpeed *= 0.75
-        ball = Ball(big, self.x, self.y + 70, ballSpeed, ySpeed)
+        ball = Ball(big, self.x, self.y + 100, ballSpeed, ySpeed)
         game_world.add_object(ball, game_world.layer_obstacle)
