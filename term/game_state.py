@@ -19,15 +19,22 @@ class Ingame:
         self.image = load_image('image/background.png')
     def draw(self):
         self.image.draw(400, 300)
+    def update(self):
+        pass
 
 def enter():
-    global player,tutorial,bullets,ingame,ai,life,coin
+    global player,bullets,bg,ai,life,coin
     player = Player()
-    ingame = Ingame()
+    bg = Ingame()
     life = Life()
     coin = Coin()
     ai = Ai()
     bullets = []
+
+    game_world.add_object(bg, game_world.layer_bg)
+    game_world.add_object(player, game_world.layer_player)
+    game_world.add_object(ai, game_world.layer_ai)
+    game_world.add_object(bullets, game_world.layer_bullet)
 
 def handle_events():
     global running
@@ -68,25 +75,15 @@ def handle_events():
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
 
-def collide(a, b):
-    left_a, bottom_a, right_a, top_a = a.get_bb()
-    left_b, bottom_b, right_b, top_b = b.get_bb()
-
-    if left_a > right_b : return False
-    if right_a < left_b : return False
-    if top_a < bottom_b : return False
-    if bottom_a > top_b : return False
-
-    return True
-
 def draw():
     global player,tutorial,bullets,ingame,ai,coin,Boundingbox
     clear_canvas()
-    ingame.draw()
-    ai.draw(player.x)
-    player.draw()
+    # ingame.draw()
+    # ai.draw(player.x)
+    # player.draw()
     life.draw()
     coin.draw()
+    game_world.draw()
 
     for loc in player.attack:
         player.attack_image.draw(loc[0], loc[1])
@@ -117,7 +114,7 @@ def collides(a, b):
     return True
 
 def update():
-    global player,bullets, ai,Boundingbox
+    global player,bullets, ai
     game_world.update()
     player.update()
     ai.update(player.x,player.y)
@@ -143,15 +140,15 @@ def update():
     for member in bullets:
         member.update()
 
-    #for bullets in game_world.objects_at_layer(game_world.layer_obstacle):
-    if collides(ai, bullets):
-        print("Collision:", bullets)
-        game_world.remove_object(bullets)
+    for bullets in game_world.objects_at_layer(game_world.layer_obstacle):
+        if collides(ai, bullets):
+            print("Collision:", bullets)
+            game_world.remove_object(bullets)
 
     bullets = [b for b in bullets if not b.shouldDelete]
 
 def exit():
-    pass
+    game_world.clear()
 
 if __name__ == '__main__':
     main()

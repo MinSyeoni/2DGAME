@@ -1,8 +1,8 @@
 objects = [[],[],[],[]]
 layer_bg = 0
 layer_player = 1
-layer_obstacle = 2
-layer_stick = 3
+layer_bullet = 2
+layer_ai = 3
 
 def add_object(o, layer):
 	objects[layer].append(o)
