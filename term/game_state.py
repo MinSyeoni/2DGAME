@@ -2,7 +2,6 @@ from pico2d import *
 import game_framework
 import tutorial_state
 import game_world
-import random
 from Player import Player
 from Bullet import Bullet
 from Life import Life
@@ -36,10 +35,60 @@ def enter():
     game_world.add_object(ai, game_world.layer_ai)
     game_world.add_object(bullets, game_world.layer_bullet)
 
+def draw():
+    global player,bullets,bg,ai,coin,Boundingbox
+    clear_canvas()
+    bg.draw()
+    ai.draw(player.x)
+    player.draw()
+    life.draw()
+    coin.draw()
+
+    for loc in player.attack:
+        player.attack_image.draw(loc[0], loc[1])
+
+    for member in bullets:
+        member.draw()
+
+    if Boundingbox == 1:
+        player.draw_bb()
+        for member in bullets:
+            member.draw_bb()
+        for member in ai:
+            member.draw_bb()
+        for member in player:
+            member.draw_bb()
+    update_canvas()
+
+def collides(a, b):
+    if not hasattr(a, 'get_bb'): return False
+    if not hasattr(b, 'get_bb'): return False
+
+    la, ba, ra, ta = a.get_bb()
+    lb, bb, rb, tb = b.get_bb()
+    if la > rb: return False
+    if ra < lb: return False
+    if ta < bb: return False
+    if ba > tb: return False
+    return True
+
+def update():
+    global player,bullets
+    player.update()
+
+    for member in bullets:
+        member.update()
+    bullets = [b for b in bullets if not b.shouldDelete]
+
+    game_world.update()
+    for bullets in game_world.objects_at_layer(game_world.layer_obstacle):
+        if collides(player, bullets):
+            print("Collision:", bullets)
+            game_world.remove_object(bullets)
+
 def handle_events():
     global running
     global player,tx,ty
-    global attack
     global bullets
 
     events = get_events()
@@ -74,78 +123,6 @@ def handle_events():
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
-
-def draw():
-    global player,tutorial,bullets,ingame,ai,coin,Boundingbox
-    clear_canvas()
-    # ingame.draw()
-    # ai.draw(player.x)
-    # player.draw()
-    life.draw()
-    coin.draw()
-    game_world.draw()
-
-    for loc in player.attack:
-        player.attack_image.draw(loc[0], loc[1])
-
-    for member in bullets:
-        member.draw()
-
-    if Boundingbox == 1:
-        player.draw_bb()
-        for member in bullets:
-            member.draw_bb()
-        for member in ai:
-            member.draw_bb()
-        for member in player:
-            member.draw_bb()
-    update_canvas()
-
-def collides(a, b):
-    if not hasattr(a, 'get_bb'): return False
-    if not hasattr(b, 'get_bb'): return False
-
-    la, ba, ra, ta = a.get_bb()
-    lb, bb, rb, tb = b.get_bb()
-    if la > rb: return False
-    if ra < lb: return False
-    if ta < bb: return False
-    if ba > tb: return False
-    return True
-
-def update():
-    global player,bullets, ai
-    game_world.update()
-    player.update()
-    ai.update(player.x,player.y)
-
-    if player.state == 0:
-        player.x -= 1
-        if player.x < 100:
-            player.x = 100
-    elif player.state == 1:
-        player.x += 1
-        if player.x >700:
-            player.x = 700
-
-    if player.goto == 0:
-        player.y += 1
-        if player.y > 520:
-            player.y = 520
-    elif player.goto == 1:
-        player.y -= 1
-        if player.y < 150:
-            player.y = 150
-
-    for member in bullets:
-        member.update()
-
-    for bullets in game_world.objects_at_layer(game_world.layer_obstacle):
-        if collides(ai, bullets):
-            print("Collision:", bullets)
-            game_world.remove_object(bullets)
-
-    bullets = [b for b in bullets if not b.shouldDelete]
 
 def exit():
     game_world.clear()

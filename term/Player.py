@@ -58,3 +58,21 @@ class Player:
                 if attackY > 0 and self.y > ty: self.y = ty
             if(self.x, self.y) == (tx,ty):
                 del self.attack[0]
+
+        if self.state == 0:
+            self.x -= 1
+            if self.x < 100:
+                self.x = 100
+        elif self.state == 1:
+            self.x += 1
+            if self.x > 700:
+                self.x = 700
+
+        if self.goto == 0:
+            self.y += 1
+            if self.y > 520:
+                self.y = 520
+        elif self.goto == 1:
+            self.y -= 1
+            if self.y < 150:
+                self.y = 150

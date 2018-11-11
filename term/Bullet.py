@@ -1,5 +1,6 @@
 from pico2d import *
 import config
+import game_world
 
 class Bullet:
     def __init__(self,playerX, playerY, targetX, targetY):
@@ -36,11 +37,8 @@ class Bullet:
 
         pointX, pointY = self.targetX - self.currX, self.targetY - self.currY
         list = math.sqrt(pointX ** 2 + pointY ** 2)
-
-
         self.currX += self.speed * pointX / list
         self.currY += self.speed * pointY / list
-
 
         if self.currX > self.targetX - 5 and self.currX < self.targetX + 5:
             print(self, self.targetX, self.targetY, self.currX, self.currY)

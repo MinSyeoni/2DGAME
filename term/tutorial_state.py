@@ -82,23 +82,6 @@ def update():
     global player
     global bullets
     player.update()
-    if player.state == 0:
-        player.x -= 1
-        if player.x < 100:
-            player.x = 100
-    elif player.state == 1:
-        player.x += 1
-        if player.x >700:
-            player.x = 700
-
-    if player.goto == 0:
-        player.y += 1
-        if player.y > 520:
-            player.y = 520
-    elif player.goto == 1:
-        player.y -= 1
-        if player.y < 150:
-            player.y = 150
 
     for member in bullets:
         member.update()
