@@ -1,0 +1,16 @@
+백그라운드 draw_to_origin 위에 그리는것..! 직접 해봐야겠다
+from bg import Background 이후 백그라운드 언급하는것은 bg.py인것이다.
+텀프할때 사용할것..
+
+백그라운드가 바뀌기를 바랄때 boy의 스프라이트 위치가 백그라운드 상의 좌표이기때문에 boy.x,boy.y로 좌표를 두지 말고 *boy.pos()로 해준다
+
+infinitebackground는 원래 이미지가 있는데 그것을 반복해서 사용하는 class 복잡하다..
+
+from bg import infinitebackground as backgruound
+저걸 백그라운드로 쓰겠다. 기존 코드들 참고해서 수정해야겠다
+
+타일이 안그려진게 0 그려진게 1부터.. 32x32인데 처음듣는거라 이해하는데 좀 걸렸다
+
+제이슨파일에 height infinite layers 등등 적어두기
+
+beg_x,y = -int(~~~ 마이너스로 내려가면 안그리게하기
