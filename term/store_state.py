@@ -1,7 +1,7 @@
 from pico2d import *
 import game_framework
 import tutorial_state
-from Player import Player
+import Player
 from Coin import Coin
 from Life import Life
 
