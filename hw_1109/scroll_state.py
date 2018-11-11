@@ -1,15 +1,11 @@
 from pico2d import *
 import game_framework
-from boy import Boy
+from Player import Player
 import game_world
-from tilebg import TiledBackground as Background
-
-# from enum import Enum
-
-# BOYS_COUNT = 1000
+from bg import ParallexBackground as Background
 
 def handle_events():
-    global boy
+    global player
     events = get_events()
     for e in events:
         if e.type == SDL_QUIT:
@@ -17,19 +13,19 @@ def handle_events():
         elif (e.type, e.key) == (SDL_KEYDOWN, SDLK_ESCAPE):
             game_framework.pop_state()
         else:
-            boy.handle_event(e)
+            player.handle_event(e)
 
 def enter():
-    global boy
+    global player
 
-    boy = Boy()
+    player = Player()
     bg = Background()
 
-    boy.bg = bg
-    bg.target = boy
+    player.bg = bg
+    bg.target = player
 
     game_world.add_object(bg, game_world.layer_bg)
-    game_world.add_object(boy, game_world.layer_player)
+    game_world.add_object(player, game_world.layer_player)
 
 def draw():
     clear_canvas()
@@ -39,8 +35,6 @@ def draw():
 def update():
     game_world.update()
     delay(0.03)
-
-# fill here
 
 def exit():
     game_world.clear()

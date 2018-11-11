@@ -32,9 +32,6 @@ class TiledBackground:
         tile_y = self.y // self.tileWidth
         beg_x = - int(self.x % self.tileWidth)
         beg_y = - int(self.y % self.tileHeight)
-
-        # print(tile_x, tile_y, beg_x, beg_y)
-
         y = beg_y
         ty = tile_y
         while y < self.ch:

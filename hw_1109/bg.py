@@ -22,9 +22,9 @@ class ParallexLayer:
 class ParallexBackground:
     def __init__(self):
         self.layers = [\
-            ParallexLayer('../res/b0.png', 0.3), \
-            ParallexLayer('../res/b1.png', 0.7), \
-            ParallexLayer('../res/b2.png', 1.0), \
+            ParallexLayer('../image/b0.png', 0.3), \
+            ParallexLayer('../image/b1.png', 0.7), \
+            ParallexLayer('../image/b2.png', 1.0), \
         ]
         self.min_x, self.min_y = 0, 100
         self.max_x, self.max_y = 20000, 100,
@@ -41,7 +41,7 @@ class ParallexBackground:
 
 class Background:
     def __init__(self):
-        self.image = load_image('../res/futsal_court.png')
+        self.image = load_image('../image/futsal_court.png')
         self.cw = get_canvas_width()
         self.ch = get_canvas_height()
         self.width = self.image.w
@@ -59,7 +59,7 @@ class Background:
 
 class InfiniteBackground:
     def __init__(self):
-        self.image = load_image('../res/futsal_court.png')
+        self.image = load_image('../image/futsal_court.png')
         self.cw = get_canvas_width()
         self.ch = get_canvas_height()
         self.width = self.image.w
