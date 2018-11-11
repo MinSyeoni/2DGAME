@@ -89,9 +89,6 @@ def handle_events():
             boy.getY = -(stick.y-ty)/150
             stick.rad = math.atan2(stick.x-tx, ty-stick.y)
 
-        # if e.type == SDL_MOUSEBUTTONDOWN:
-
-
 def exit():
     game_world.clear()
 
