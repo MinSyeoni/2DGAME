@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 from Player import Player
 import game_world
-from bg import InfiniteBackground as Background
+from tilebg import TiledBackground as Background
 
 def handle_events():
     global player

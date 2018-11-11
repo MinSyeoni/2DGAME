@@ -15,9 +15,8 @@ class TiledBackground:
         self.mapHeight = layer["height"]
         self.tileWidth = dict["tilewidth"]
         self.tileHeight = dict["tileheight"]
-
-        self.cw = get_canvas_width()
-        self.ch = get_canvas_height()
+        self.canvas_widht = 800
+        self.canvas_height = 600
         self.min_x, self.min_y = 0, 0
         self.max_x, self.max_y = self.mapWidth * self.tileWidth, self.mapHeight * self.tileHeight
         print(self.max_x, self.max_y)
@@ -34,11 +33,11 @@ class TiledBackground:
         beg_y = - int(self.y % self.tileHeight)
         y = beg_y
         ty = tile_y
-        while y < self.ch:
+        while y < self.canvas_height:
             x = beg_x
             tx = tile_x
             ti = (self.mapHeight - ty - 1) * self.mapWidth + tx
-            while x < self.cw:
+            while x < self.canvas_widht:
                 tile = self.data[ti]
                 rect = self.rectForTile(tile)
                 self.image.clip_draw_to_origin(*rect, x, y)
@@ -56,9 +55,8 @@ class TiledBackground:
         src_x = x * (self.tileWidth + 1) + 1
         src_y = y * (self.tileHeight + 1) + 1
         return src_x, src_y, self.tileWidth, self.tileHeight
-
     def update(self):
         if self.target == None:
             return
-        self.x = clamp(0, int(self.target.x - self.cw // 2), self.max_x - self.cw)
-        self.y = clamp(0, int(self.target.y - self.ch // 2), self.max_y - self.ch)
+        self.x = clamp(0, int(self.target.x - self.canvas_widht // 2), self.max_x - self.canvas_widht)
+        self.y = clamp(0, int(self.target.y - self.canvas_height // 2), self.max_y - self.canvas_height)
