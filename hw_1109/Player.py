@@ -5,16 +5,18 @@ import time
 class IdleState:
     @staticmethod
     def enter(player):
-        player.time = time.time()
+        player.timer = 100
+        player.frame = 0
     @staticmethod
     def exit(player):
         pass
     @staticmethod
     def update(player):
         player.frame = (player.frame + 1) % 8
-        elapsed = time.time() - player.time
-        if elapsed > 10.0:
+        player.timer -= 1
+        if player.timer == 0:
             player.set_state(SleepState)
+        print(player.timer)
     @staticmethod
     def draw(player):
         y = 200 if player.dir == 0 else 300
@@ -37,7 +39,6 @@ class RunState:
         player.y = player.y + mag * player.mag * player.dy
         if hasattr(player.bg, 'clamp'):
             player.bg.clamp(player)
-
     @staticmethod
     def draw(player):
         src_y = 0 if player.dir == 0 else 100
@@ -46,7 +47,7 @@ class RunState:
 class SleepState:
     @staticmethod
     def enter(player):
-        player.time = time.time()
+        player.frame = 0
     @staticmethod
     def exit(player):
         pass
@@ -56,12 +57,9 @@ class SleepState:
     @staticmethod
     def draw(player):
         if player.dir == 1:
-            y, mx, angle = 300, -25, 3.141592/2
+            Player.image.clip_composite_draw(player.frame * 100, 300, 100, 100, 3.141592/2, '', player.x-25, player.y-25, 100, 100)
         else:
-            y, mx, angle = 200, +25, -3.141592/2
-        x, y = player.pos()
-        Player.image.clip_composite_draw(player.frame * 100, y, 100, 100,
-            angle, '', x + mx, y - 25, 100, 100)
+            Player.image.clip_composite_draw(player.frame * 100, 200, 100, 100, 3.141592/2, '', player.x+25, player.y-25, 100, 100)
 
 class Player:
     image = None
