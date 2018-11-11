@@ -55,7 +55,6 @@ class Background:
             return
         self.x = clamp(0, int(self.target.x - self.cw // 2), self.width - self.cw)
         self.y = clamp(0, int(self.target.y - self.ch // 2), self.height - self.ch)
-        # print(self.x, self.y, self.cw, self.ch, 0, 0)
 
 class InfiniteBackground:
     def __init__(self):
@@ -65,7 +64,7 @@ class InfiniteBackground:
         self.width = self.image.w
         self.height = self.image.h
         self.min_x, self.min_y = 0, 0
-        self.max_x, self.max_y = 20000, 2000,
+        self.max_x, self.max_y = 1700, 1000,
         self.x, self.y = 0, 0
         self.target = None
     def clamp(self, o):
@@ -101,3 +100,5 @@ class InfiniteBackground:
         self.y1 = 0
         self.w1 = self.w4
         self.h1 = self.h2
+
+        print(self.x,self.y)
