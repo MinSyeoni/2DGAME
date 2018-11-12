@@ -16,7 +16,7 @@ class ParallexLayer:
         self.x2 = 0
         self.width2 = self.canvas_widht - self.width1
 
-class ParallexBackground:
+class ParallaxBackground:
     def __init__(self):
         ##배경 하늘 나무 땅 순서
         self.layers = [\
