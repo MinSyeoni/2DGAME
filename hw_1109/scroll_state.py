@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 from Player import Player
 import game_world
-from bg import ParallaxBackground as Background ##백그라운드 시차
+from bg import InfiniteBackground as Background ##백그라운드 무한
 
 def handle_events():
     global player
