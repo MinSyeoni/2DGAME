@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 from Player import Player
 import game_world
-from tilebg import TiledBackground as Background
+from tilebg import TiledBackground as Background ##백그라운드 타일
 
 def handle_events():
     global player
