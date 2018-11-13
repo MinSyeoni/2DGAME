@@ -1,0 +1,21 @@
+<사운드>
+
+수업 듣기 전에 사운드 먼저 넣어보려고 했는데 안되는 이유가 사운드 에러 수정이었던거같다..
+else: audio_on = True를 추가해야겠다
+
+load_music(파일이름) mp3랑 ogg로딩
+
+repeat_play() - 반복재생
+play(n) ? n 번 재생
+set_volume(v) ? 소리 크기 0~128
+get_volume() ? 현재 소리 크기
+stop() ? 중단
+pause() ? 일시정지
+resume() - 재개
+
+load_wav(파일이름) wav로딩 wav는 다르다.
+
+repeat_play() - 반복재생
+play(n) ? n 번 재생
+set_volume(v) ? 소리 크기 0~128
+get_volume() ? 현재 소리 크기
