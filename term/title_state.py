@@ -6,9 +6,29 @@ import game_state
 name = "TitleState"
 image = None
 
+class title:
+    def __init__(self):
+        self.image = load_image('image/title.png')
+        self.bgm = load_music('resource/title.mp3')
+        self.bgm.set_volume(100)
+        self.bgm.repeat_play()
+    def draw(self):
+        self.image.draw(400, 300)
+    def update(self):
+        pass
+
 def enter():
-    global image,sound
-    image = load_image('image/title.png')
+    global bg
+    bg = title()
+
+def draw():
+    global bg
+    clear_canvas()
+    bg.draw()
+    update_canvas()
+
+def update():
+    pass
 
 def exit():
     pass
@@ -23,14 +43,6 @@ def handle_events():
                 game_framework.quit()
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 game_framework.change_state(tutorial_state)
-
-def draw():
-    clear_canvas()
-    image.draw(400, 300)
-    update_canvas()
-
-def update():
-    pass
 
 if __name__ == '__main__':
     main()
