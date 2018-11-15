@@ -41,6 +41,8 @@ class Player:
 
     def update(self):
         self.timer += 1
+        self.x += 0
+        self.y += 0
         if self.timer > 15:
             self.frame = (self.frame + 1) % 8
             self.timer = 0
