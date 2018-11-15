@@ -64,6 +64,7 @@ def handle_events():
                 game_framework.change_state(store_state)
             elif 650 < player.x < 750 and 300 < player.y <350:
                 game_framework.change_state(game_state)
+                tutorial.bgm.stop()
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:     ##왼쪽
