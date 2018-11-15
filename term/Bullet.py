@@ -1,6 +1,5 @@
 from pico2d import *
 import config
-import game_world
 
 class Bullet:
     def __init__(self,playerX, playerY, targetX, targetY):
