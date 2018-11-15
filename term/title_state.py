@@ -58,7 +58,7 @@ def handle_events():
             elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
                 button.key_sound.play()
                 while i >= 0:
-                    # print(i)
+                    print(i)
                     i += 0.0001
                     if i > 17:
                         i = 17

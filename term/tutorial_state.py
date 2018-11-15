@@ -14,20 +14,44 @@ class Tutorial:
     def __init__(self):
         self.image = load_image('image/tutorial.png')
         print(self.image)
+        self.bgm = load_music('resource/tutorial.mp3')
+        self.bgm.set_volume(100)
+        self.bgm.repeat_play()
     def draw(self):
         self.image.draw(400, 300)
 
+class runsound:
+    def __init__(self):
+        self.run = load_wav('resource/run.wav')
+        self.run.set_volume(20)
+    def draw(self):
+        pass
+    def update(self):
+        pass
+
+class bulletsound:
+    def __init__(self):
+        self.bullet = load_wav('resource/bullet.wav')
+        self.bullet.set_volume(30)
+    def draw(self):
+        pass
+    def update(self):
+        pass
+
 def enter():
-    global player,tutorial,bullets
+    global player,tutorial,bullets,run,bullet
     player = Player()
     tutorial = Tutorial()
+    run = runsound()
     bullets = []
+    bullet = bulletsound()
 
 def handle_events():
     global running
     global player
     global attack
     global bullets
+    global run
 
     events = get_events()
     for event in events:
@@ -44,12 +68,16 @@ def handle_events():
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:     ##왼쪽
                 player.state = 0
+                run.run.play(1)
             elif event.key == SDLK_d:   ##오른쪽
                 player.state = 1
+                run.run.play(1)
             elif event.key == SDLK_w:   ##위
                 player.goto = 0
+                run.run.play(1)
             elif event.key == SDLK_s:   ##아래
                 player.goto = 1
+                run.run.play(1)
 
         elif event.type == SDL_KEYUP: # 키 안누를때 앉기
             if event.key == SDLK_a:  ##왼쪽
@@ -61,6 +89,7 @@ def handle_events():
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
+                bullet.bullet.play(1)
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
