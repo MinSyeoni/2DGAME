@@ -46,7 +46,7 @@ def exit():
     pass
 
 def handle_events():
-    global bg,button
+    global button
     i = 0
     events = get_events()
     for event in events:
