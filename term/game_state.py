@@ -16,8 +16,8 @@ Boundingbox = 0
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
-        self.bgm = load_wav('resource/gamestate.WAV')
-        self.bgm.set_volume(30)
+        self.bgm = load_music('resource/gamestate.mp3')
+        self.bgm.set_volume(100)
         self.bgm.repeat_play()
     def draw(self):
         self.image.draw(400, 300)
@@ -91,11 +91,10 @@ def collides(a, b):
     return True
 
 def update():
-    global player,bullets
+    global player,bullets,bg
     game_world.update()
     player.update()
     ai.update(player.x, player.y)
-
     for member in bullets:
         member.update()
     bullets = [b for b in bullets if not b.shouldDelete]
@@ -119,7 +118,6 @@ def handle_events():
             game_framework.quit()
         elif 99 < player.x < 150 and 300 < player.y < 350:
             game_framework.change_state(tutorial_state)
-            bg.bgm.stop()
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽

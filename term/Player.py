@@ -4,8 +4,8 @@ import config
 
 class Player:
     def __init__(self):
-        self.x = random.randint(300,500)
-        self.y = random.randint(200,400)
+        self.x = 300
+        self.y = 200
         self.speed = 2
         self.timer = 0
         self.frame = random.randint(0,7)
@@ -41,8 +41,6 @@ class Player:
 
     def update(self):
         self.timer += 1
-        self.x += 0
-        self.y += 0
         if self.timer > 15:
             self.frame = (self.frame + 1) % 8
             self.timer = 0
