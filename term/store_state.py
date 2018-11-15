@@ -11,22 +11,52 @@ image = None
 class Store:
     def __init__(self):
         self.image = load_image('image/store_back.png')
+        self.b1 = load_image('image/store1.png')
+        self.b2 = load_image('image/store2.png')
+        self.b3 = load_image('image/store3.png')
         print(self.image)
     def draw(self):
         self.image.draw(400, 300)
+        self.b1.draw(200, 320)
+        self.b2.draw(400, 320)
+        self.b3.draw(600, 320)
+
+class runsound:
+    def __init__(self):
+        self.run = load_wav('resource/run.wav')
+        self.run.set_volume(20)
+    def draw(self):
+        pass
+    def update(self):
+        pass
+
+class button:
+    def __init__(self):
+        self.button = load_wav('resource/button.wav')
+        self.button.set_volume(100)
+    def draw(self):
+        pass
+    def update(self):
+        pass
 
 def enter():
     global store
     global player
     global life
     global coin
+    global run
+    global button
+    button = button()
     coin = Coin()
     life = Life()
     store = Store()
     player = Player()
+    run = runsound()
 
 def handle_events():
     global player
+    global run
+    global button
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -38,12 +68,16 @@ def handle_events():
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:     ##왼쪽
                 player.state = 0
+                run.run.play(1)
             elif event.key == SDLK_d:   ##오른쪽
                 player.state = 1
+                run.run.play(1)
             elif event.key == SDLK_w:   ##위
                 player.goto = 0
+                run.run.play(1)
             elif event.key == SDLK_s:   ##아래
                 player.goto = 1
+                run.run.play(1)
 
         elif event.type == SDL_KEYUP: # 키 안누를때 앉기
             if event.key == SDLK_a:  ##왼쪽
@@ -52,6 +86,10 @@ def handle_events():
                 player.idle = 2
             player.state = 2
             player.goto = 2
+
+        if event.type == SDL_MOUSEBUTTONDOWN:
+            if event.button == SDL_BUTTON_LEFT:
+                button.button.play(1)
 
 def draw():
     global store
