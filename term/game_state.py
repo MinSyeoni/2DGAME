@@ -16,24 +16,42 @@ Boundingbox = 0
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
+        self.bgm = load_wav('resource/gamestate.WAV')
+        self.bgm.set_volume(30)
+        self.bgm.repeat_play()
     def draw(self):
         self.image.draw(400, 300)
     def update(self):
         pass
 
+class runsound:
+    def __init__(self):
+        self.run = load_wav('resource/run.wav')
+        self.run.set_volume(20)
+    def draw(self):
+        pass
+    def update(self):
+        pass
+
+class bulletsound:
+    def __init__(self):
+        self.bullet = load_wav('resource/bullet.wav')
+        self.bullet.set_volume(30)
+    def draw(self):
+        pass
+    def update(self):
+        pass
+
 def enter():
-    global player,bullets,bg,ai,life,coin
+    global player,bullets,bg,ai,life,coin,run,bullet
     player = Player()
     bg = Ingame()
     life = Life()
     coin = Coin()
     ai = Ai()
     bullets = []
-
-    game_world.add_object(bg, game_world.layer_bg)
-    game_world.add_object(player, game_world.layer_player)
-    game_world.add_object(ai, game_world.layer_ai)
-    game_world.add_object(bullets, game_world.layer_bullet)
+    run = runsound()
+    bullet = bulletsound()
 
 def draw():
     global player,bullets,bg,ai,coin,Boundingbox
@@ -74,17 +92,19 @@ def collides(a, b):
 
 def update():
     global player,bullets
+    game_world.update()
     player.update()
+    ai.update(player.x, player.y)
 
     for member in bullets:
         member.update()
     bullets = [b for b in bullets if not b.shouldDelete]
 
-    game_world.update()
-    for bullets in game_world.objects_at_layer(game_world.layer_obstacle):
-        if collides(player, bullets):
-            print("Collision:", bullets)
-            game_world.remove_object(bullets)
+    # game_world.update()
+    # for bullets in game_world.objects_at_layer(game_world.layer_obstacle()):
+    #     if collides(player, bullets):
+    #         print("Collision:", bullets)
+    #         game_world.remove_object(bullets)
 
 def handle_events():
     global running
@@ -99,16 +119,21 @@ def handle_events():
             game_framework.quit()
         elif 99 < player.x < 150 and 300 < player.y < 350:
             game_framework.change_state(tutorial_state)
+            bg.bgm.stop()
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽
                 player.state = 0
+                run.run.play(1)
             elif event.key == SDLK_d:  ##오른쪽
                 player.state = 1
+                run.run.play(1)
             elif event.key == SDLK_w:  ##위
                 player.goto = 0
+                run.run.play(1)
             elif event.key == SDLK_s:  ##아래
                 player.goto = 1
+                run.run.play(1)
 
         elif event.type == SDL_KEYUP:  # 키 안누를때 앉기
             if event.key == SDLK_a:  ##왼쪽
@@ -120,6 +145,7 @@ def handle_events():
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
+                bullet.bullet.play(1)
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)

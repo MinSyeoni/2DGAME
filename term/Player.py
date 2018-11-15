@@ -4,7 +4,7 @@ import config
 
 class Player:
     def __init__(self):
-        self.x = random.randint(150,500)
+        self.x = random.randint(300,500)
         self.y = random.randint(200,400)
         self.speed = 2
         self.timer = 0
