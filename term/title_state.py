@@ -58,7 +58,7 @@ def handle_events():
                 button.key_sound.play()
                 while i >= 0:
                     print(i)
-                    i += 0.0001
+                    i += 0.05
                     if i > 17:
                         i = 17
                         break
