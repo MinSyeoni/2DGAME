@@ -2,11 +2,13 @@ from pico2d import *
 import game_framework
 import tutorial_state
 import game_world
+import random
 from Player import Player
 from Bullet import Bullet
 from Life import Life
 from Coin import Coin
 from Ai import Ai
+from AiBullet import Missile
 
 name = "GameState"
 image = None
@@ -43,7 +45,7 @@ class bulletsound:
         pass
 
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet
+    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2
     player = Player()
     bg = Ingame()
     life = Life()
@@ -52,15 +54,24 @@ def enter():
     bullets = []
     run = runsound()
     bullet = bulletsound()
+    game_world.add_object(player,game_world.layer_player)
+    for i in range(10):
+        x = random.randint(100,700)
+        y = random.randint(100,500)
+        m = Missile(x,y,0,0,60)
+        game_world.add_object(m,game_world.layer_obstacle)
 
 def draw():
     global player,bullets,bg,ai,coin,Boundingbox
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
-    player.draw()
+    # player.draw()
     life.draw()
     coin.draw()
+    # m1.draw()
+    # m2.draw()
+    game_world.draw()
 
     for loc in player.attack:
         player.attack_image.draw(loc[0], loc[1])
@@ -93,8 +104,12 @@ def collides(a, b):
 def update():
     global player,bullets,bg
     game_world.update()
-    player.update()
+    # player.update()
+    # m1.update()
+    # m2.update()
+    game_world.update()
     ai.update(player.x, player.y)
+
     for member in bullets:
         member.update()
     bullets = [b for b in bullets if not b.shouldDelete]
