@@ -123,17 +123,19 @@ def collides_distance(a, b):
     radius_sum = a.size / 2 + b.size / 2
     return sq_dist < radius_sum ** 2
 
+def collides_bullet(a, b):
+    dx, dy = a.x - b.currX, a.y - b.currY
+    sq_dist = dx ** 2 + dy ** 2
+    radius_sum = a.size / 2 + b.size / 2
+    return sq_dist < radius_sum ** 2
+
 def update():
-    global player,bullets,bg,life
+    global player,bullets,bg,life,ai
     game_world.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
     ai.update(player.x, player.y)
     if obstacle_count < 10:
         createMissle()
-
-    for member in bullets:
-        member.update()
-    bullets = [b for b in bullets if not b.shouldDelete]
 
     for m in game_world.objects_at_layer(game_world.layer_obstacle):
         collides = collides_distance(player, m)
@@ -143,10 +145,14 @@ def update():
             game_world.remove_object(m)
             break
 
-    # for bullets in game_world.objects_at_layer(game_world.layer_obstacle()):
-    #     if collides(player, bullets):
-    #         print("Collision:", bullets)
-    #         game_world.remove_object(bullets)
+    for member in bullets:
+        member.update()
+        collides = collides_bullet(ai, member)
+        if (collides):
+            aiLife.heart -= 5
+            bullets = [b for b in bullets if b.shouldDelete]
+            break
+    bullets = [b for b in bullets if not b.shouldDelete]
 
 def handle_events():
     global running

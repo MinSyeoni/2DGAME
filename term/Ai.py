@@ -13,6 +13,7 @@ class Ai:
         self.field_width = 800
         self.field_height = 600
         self.speed = 0.2
+        self.size = 60
         self.timer = 0
         self.dx = 0
         self.dy = 0
