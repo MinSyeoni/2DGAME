@@ -10,7 +10,6 @@ class Ai:
     def __init__(self):
         self.x = random.randint(100,700)
         self.y = random.randint(150,500)
-        self.attackX = self.x
         self.field_width = 800
         self.field_height = 600
         self.speed = 0.2
@@ -36,15 +35,12 @@ class Ai:
             return self.x - 50, self.y - 50, self.x + 50, self.y + 50
 
     def draw(self, px):
-        global attackX
         if self.x > px:
             self.ai_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
         else:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
 
     def update(self, px, py):
-        global attackX
-
         self.timer+=1
         if self.timer > 50:
             self.frame = (self.frame + 1) % 8

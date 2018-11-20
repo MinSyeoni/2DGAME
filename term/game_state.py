@@ -9,6 +9,7 @@ from Life import Life
 from Coin import Coin
 from Ai import Ai
 from AiBullet import Missile
+from AiLife import AiLife
 
 name = "GameState"
 image = None
@@ -45,11 +46,12 @@ class bulletsound:
         pass
 
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2
+    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife
     player = Player()
     bg = Ingame()
     life = Life()
     coin = Coin()
+    aiLife = AiLife()
     ai = Ai()
     bullets = []
     run = runsound()
@@ -90,12 +92,13 @@ def gen_random():
     return x,y,dx,dy
 
 def draw():
-    global player,bullets,bg,ai,coin,Boundingbox
+    global player,bullets,bg,ai,coin,Boundingbox,aiLife
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
     life.draw()
     coin.draw()
+    aiLife.draw(player.x,player.y)
     game_world.draw()
     print(game_world.count_at_layer(game_world.layer_obstacle))
     for loc in player.attack:
