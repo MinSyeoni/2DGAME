@@ -13,7 +13,7 @@ class Ai:
         self.attackX = self.x
         self.field_width = 800
         self.field_height = 600
-        self.speed = 1
+        self.speed = 0.2
         self.timer = 0
         self.dx = 0
         self.dy = 0
@@ -22,14 +22,9 @@ class Ai:
         self.goto = 0 # 0 업 1 다운
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
-        self.attack_count = 0#ai 공격
         self.ai = [(self.x,self.y)] #ai 좌표
-        self.attack_timer = 0
         self.pointX = 0
         self.pointY = 0
-        self.ai_attack_image1 = load_image('image/ai_attack.png')
-        self.ai_attack_image2 = load_image('image/ai_attack2.png')
-
 
     def enter(self):
         global player
@@ -53,7 +48,6 @@ class Ai:
         self.timer+=1
         if self.timer > 50:
             self.frame = (self.frame + 1) % 8
-            self.attack_count += 1
             self.timer = 0
 
         pointX, pointY = px - self.x, py - self.y
@@ -63,7 +57,3 @@ class Ai:
         self.y += self.speed * pointY / list
 
         distance = Ai.RUN_SPEED_PPS * game_framework.frame_time
-        self.x += (self.dx * distance)
-        self.y += (self.dy * distance)
-        self.x = clamp(Ai.FIELD_MARGIN, self.x, self.field_width - Ai.FIELD_MARGIN)
-        self.y = clamp(Ai.FIELD_MARGIN, self.y, self.field_height - Ai.FIELD_MARGIN)

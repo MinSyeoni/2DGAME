@@ -56,8 +56,12 @@ def enter():
     bullet = bulletsound()
     game_world.add_object(player,game_world.layer_player)
     for i in range(10):
-        m = Missile(*gen_random(),60)
-        game_world.add_object(m,game_world.layer_obstacle)
+       createMissle()
+
+def createMissle():
+    m = Missile(*gen_random(),60)
+    game_world.add_object(m,game_world.layer_obstacle)
+
 score = 0
 def gen_random():
     global score
@@ -125,17 +129,16 @@ def collides(a, b):
 def update():
     global player,bullets,bg
     game_world.update()
-    # player.update()
-    # m1.update()
-    # m2.update()
-    game_world.update()
+    obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
+
     ai.update(player.x, player.y)
+    if obstacle_count < 10:
+        createMissle()
 
     for member in bullets:
         member.update()
     bullets = [b for b in bullets if not b.shouldDelete]
 
-    # game_world.update()
     # for bullets in game_world.objects_at_layer(game_world.layer_obstacle()):
     #     if collides(player, bullets):
     #         print("Collision:", bullets)

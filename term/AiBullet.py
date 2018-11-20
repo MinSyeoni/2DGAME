@@ -5,7 +5,7 @@ import game_world
 
 class Missile:
 	image = None
-	RUN_SPEED_PPS = 100
+	RUN_SPEED_PPS = 200
 
 	def __init__(self,x,y,dx,dy,size):
 		self.x, self.y = x, y
