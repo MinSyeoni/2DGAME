@@ -56,23 +56,44 @@ def enter():
     bullet = bulletsound()
     game_world.add_object(player,game_world.layer_player)
     for i in range(10):
-        x = random.randint(100,700)
-        y = random.randint(100,500)
-        m = Missile(x,y,0,0,60)
+        m = Missile(*gen_random(),60)
         game_world.add_object(m,game_world.layer_obstacle)
+score = 0
+def gen_random():
+    global score
+    field_width = 800
+    field_height = 600
+    dx,dy = random.random(),random.random()
+    if (dx < 0.5): dx -= 1
+    if (dy < 0.5): dy -= 1
+
+    side = random.randint(1,4)
+    if(side == 1):
+        x,y = random.randint(0,field_width),0
+        if(dy < 0): dy = -dy
+    if (side == 2):
+        x, y = random.randint(0, field_height), 0
+        if (dx < 0): dx = -dx
+    if (side == 3):
+        x, y = random.randint(0, field_width), field_height
+        if (dy > 0): dy = -dy
+    if (side == 4):
+        x, y = field_width, random.randint(0, field_height)
+        if (dx < 0): dx = -dx
+
+    speed = 1 + score / 60
+    dx,dy = dx * speed, dy * speed
+    return x,y,dx,dy
 
 def draw():
     global player,bullets,bg,ai,coin,Boundingbox
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
-    # player.draw()
     life.draw()
     coin.draw()
-    # m1.draw()
-    # m2.draw()
     game_world.draw()
-
+    print(game_world.count_at_layer(game_world.layer_obstacle))
     for loc in player.attack:
         player.attack_image.draw(loc[0], loc[1])
 

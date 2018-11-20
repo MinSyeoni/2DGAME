@@ -44,10 +44,8 @@ class Ai:
         global attackX
         if self.x > px:
             self.ai_image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
-            self.ai_attack_image1.draw(self.attackX, self.y)
         else:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
-            self.ai_attack_image2.draw(self.attackX, self.y)
 
     def update(self, px, py):
         global attackX

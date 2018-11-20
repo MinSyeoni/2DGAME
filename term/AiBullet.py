@@ -1,10 +1,11 @@
 from pico2d import *
 import random
 import game_framework
+import game_world
 
 class Missile:
 	image = None
-	RUN_SPEED_PPS = 200
+	RUN_SPEED_PPS = 100
 
 	def __init__(self,x,y,dx,dy,size):
 		self.x, self.y = x, y
@@ -19,6 +20,9 @@ class Missile:
 	def update(self):
 		self.x += Missile.RUN_SPEED_PPS * game_framework.frame_time * self.dx
 		self.y += Missile.RUN_SPEED_PPS * game_framework.frame_time * self.dy
+		if self.x < -self.size or self.y < -self.size or \
+			self.x > get_canvas_width() + self.size or self.y > get_canvas_height() + self.size:
+			game_world.remove_object(self)
 
 	def isInField(self, width, height):
 		if (self.x < 0): return False
