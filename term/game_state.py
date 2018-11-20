@@ -55,8 +55,8 @@ def enter():
     run = runsound()
     bullet = bulletsound()
     game_world.add_object(player,game_world.layer_player)
-    for i in range(10):
-       createMissle()
+    # for i in range(10):
+    #    createMissle()
 
 def createMissle():
     m = Missile(*gen_random(),60)
@@ -114,23 +114,16 @@ def draw():
             member.draw_bb()
     update_canvas()
 
-def collides(a, b):
-    if not hasattr(a, 'get_bb'): return False
-    if not hasattr(b, 'get_bb'): return False
-
-    la, ba, ra, ta = a.get_bb()
-    lb, bb, rb, tb = b.get_bb()
-    if la > rb: return False
-    if ra < lb: return False
-    if ta < bb: return False
-    if ba > tb: return False
-    return True
+def collides_distance(a, b):
+    dx, dy = a.x - b.x, a.y - b.y
+    sq_dist = dx ** 2 + dy ** 2
+    radius_sum = a.size / 2 + b.size / 2
+    return sq_dist < radius_sum ** 2
 
 def update():
-    global player,bullets,bg
+    global player,bullets,bg,life
     game_world.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
-
     ai.update(player.x, player.y)
     if obstacle_count < 10:
         createMissle()
@@ -138,6 +131,14 @@ def update():
     for member in bullets:
         member.update()
     bullets = [b for b in bullets if not b.shouldDelete]
+
+    for m in game_world.objects_at_layer(game_world.layer_obstacle):
+        collides = collides_distance(player, m)
+        if (collides):
+            life.heart -= 1
+            print("player life = ",life.heart)
+            game_world.remove_object(m)
+            break
 
     # for bullets in game_world.objects_at_layer(game_world.layer_obstacle()):
     #     if collides(player, bullets):
@@ -155,8 +156,8 @@ def handle_events():
             running = False
         if event.type == SDL_QUIT:
             game_framework.quit()
-        elif 99 < player.x < 150 and 300 < player.y < 350:
-            game_framework.change_state(tutorial_state)
+        # elif 99 < player.x < 150 and 300 < player.y < 350:
+        #     game_framework.change_state(tutorial_state)
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽

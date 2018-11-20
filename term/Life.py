@@ -3,7 +3,7 @@ from pico2d import *
 class Life:
     def __init__(self):
         self.image = load_image('image/life.png')
-        self.heart = 3
+        self.heart = 5
         self.font = load_font('resource/ConsolaMalgun.TTF', 40)
 
     def draw(self):

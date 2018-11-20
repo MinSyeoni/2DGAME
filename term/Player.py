@@ -8,6 +8,7 @@ class Player:
         self.y = 200
         self.speed = 2
         self.timer = 0
+        self.size = 60
         self.frame = random.randint(0,7)
         self.player_image = load_image('image/run_stand_ani.png')
         self.goto = 0 # 0 업 1 다운
