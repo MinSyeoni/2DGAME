@@ -27,6 +27,12 @@ class Ingame:
     def update(self):
         pass
 
+class die:
+    def __init__(self):
+        self.image = load_image('image/gameover.png')
+    def draw(self):
+        self.image.draw(400,300)
+
 class runsound:
     def __init__(self):
         self.run = load_wav('resource/run.wav')
@@ -46,7 +52,7 @@ class bulletsound:
         pass
 
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife
+    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die
     player = Player()
     bg = Ingame()
     life = Life()
@@ -56,9 +62,8 @@ def enter():
     bullets = []
     run = runsound()
     bullet = bulletsound()
+    die = die()
     game_world.add_object(player,game_world.layer_player)
-    # for i in range(10):
-    #    createMissle()
 
 def createMissle():
     m = Missile(*gen_random(),60)
@@ -92,7 +97,7 @@ def gen_random():
     return x,y,dx,dy
 
 def draw():
-    global player,bullets,bg,ai,coin,Boundingbox,aiLife
+    global player,bullets,bg,ai,coin,Boundingbox,aiLife,die
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
@@ -115,6 +120,11 @@ def draw():
             member.draw_bb()
         for member in player:
             member.draw_bb()
+
+    if life.heart <= 0:
+        life.heart = 0
+        die.draw()
+
     update_canvas()
 
 def collides_distance(a, b):
@@ -129,8 +139,14 @@ def collides_bullet(a, b):
     radius_sum = a.size / 2 + b.size / 2
     return sq_dist < radius_sum ** 2
 
+def collides_die(a, b):
+    dx, dy = a.x - b.x, a.y - b.y
+    sq_dist = dx ** 2 + dy ** 2
+    radius_sum = a.size / 2 + b.size / 2
+    return sq_dist < radius_sum ** 2
+
 def update():
-    global player,bullets,bg,life,ai
+    global player,bullets,bg,life,ai,die
     game_world.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
     ai.update(player.x, player.y)
@@ -144,6 +160,11 @@ def update():
             print("player life = ",life.heart)
             game_world.remove_object(m)
             break
+
+    collides = collides_die(ai, player) ## player와 ai충돌시 게임오버
+    if (collides):
+        life.heart = 0
+        die.draw()
 
     for member in bullets:
         member.update()
@@ -165,8 +186,6 @@ def handle_events():
             running = False
         if event.type == SDL_QUIT:
             game_framework.quit()
-        # elif 99 < player.x < 150 and 300 < player.y < 350:
-        #     game_framework.change_state(tutorial_state)
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽

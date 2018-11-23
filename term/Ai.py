@@ -42,10 +42,10 @@ class Ai:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
 
     def update(self, px, py):
-        self.timer+=1
-        if self.timer > 50:
-            self.frame = (self.frame + 1) % 8
-            self.timer = 0
+        # self.timer+=1
+        # if self.timer > 50:
+        #     self.frame = (self.frame + 1) % 8
+        #     self.timer = 0
 
         pointX, pointY = px - self.x, py - self.y
         list = math.sqrt(pointX ** 2 + pointY ** 2)
@@ -53,4 +53,4 @@ class Ai:
         self.x += self.speed * pointX / list
         self.y += self.speed * pointY / list
 
-        distance = Ai.RUN_SPEED_PPS * game_framework.frame_time
+        self.distance = Ai.RUN_SPEED_PPS * game_framework.frame_time
