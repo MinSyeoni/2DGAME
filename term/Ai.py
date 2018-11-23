@@ -5,7 +5,6 @@ import game_framework
 
 class Ai:
     RUN_SPEED_PPS = 300
-    FIELD_MARGIN = 50
 
     def __init__(self):
         self.x = random.randint(100,700)

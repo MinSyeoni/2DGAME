@@ -16,6 +16,9 @@ image = None
 global Boundingbox
 Boundingbox = 0
 
+GAMESTATE_READY, GAMESTATE_INPLAY, GAMESTATE_PAUSED, GAMESTETE_GAMEOVER = range(4)
+gameState = GAMESTATE_READY
+
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
@@ -53,6 +56,7 @@ class bulletsound:
 
 def enter():
     global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die
+    global gameState
     player = Player()
     bg = Ingame()
     life = Life()
@@ -64,6 +68,22 @@ def enter():
     bullet = bulletsound()
     die = die()
     game_world.add_object(player,game_world.layer_player)
+
+    if gameState != GAMESTATE_INPLAY:
+        delay(0.03)
+        return
+
+
+    gameState = GAMESTATE_READY
+    game_world.isPaused = isPaused
+
+def start_game():
+    global gameState
+    gameState = GAMESTATE_INPLAY
+
+def isPaused():
+    global gameState
+    return gameState != GAMESTATE_INPLAY
 
 def createMissle():
     m = Missile(*gen_random(),60)
@@ -178,10 +198,13 @@ def update():
 def handle_events():
     global running
     global player,tx,ty
-    global bullets
+    global bullets, gameState
 
     events = get_events()
+
     for event in events:
+        # handled = player.handle_event(events)
+        # if handled:
         if event.type == SDL_QUIT:
             running = False
         if event.type == SDL_QUIT:
@@ -215,7 +238,22 @@ def handle_events():
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
+            if event.button == SDL_BUTTON_MIDDLE:
+                gameState = GAMESTATE_INPLAY
+            handled = True
+            return handled
 
+        elif (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+            if gameState == GAMESTATE_INPLAY:
+                gameState = GAMESTATE_PAUSED
+            else:
+                gameState = GAMESTATE_INPLAY
+        handled = player.handle_event(event)
+        if handled:
+            if gameState == GAMESTATE_READY:
+                start_game()
+            elif gameState == GAMESTATE_PAUSED:
+                gameState = GAMESTATE_INPLAY
 def exit():
     game_world.clear()
 

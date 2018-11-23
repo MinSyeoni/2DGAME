@@ -11,6 +11,8 @@ class Player:
         self.speed = 2
         self.timer = 0
         self.size = 60
+        self.mouse_control = False
+        # self.angle = 0
         self.frame = random.randint(0,7)
         self.player_image = load_image('image/run_stand_ani.png')
         self.goto = 0 # 0 업 1 다운
@@ -45,10 +47,11 @@ class Player:
     def update(self):
         # self.x += Player.RUN_SPEED_PPS * game_framework.frame_time * self.dx
         # self.y += Player.RUN_SPEED_PPS * game_framework.frame_time * self.dy
-        # self.timer += 1
-        # if self.timer > 15:
-        #     self.frame = (self.frame + 1) % 8
-        #     self.timer = 0
+        self.timer += 1
+        if self.timer > 15:
+            self.frame = (self.frame + 1) % 8
+            self.timer = 0
+        self.distance = Player.RUN_SPEED_PPS * game_framework.frame_time
 
         if len(self.attack) > 0:
             (tx,ty) = self.attack[0]
