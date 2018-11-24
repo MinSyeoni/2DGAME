@@ -11,6 +11,7 @@ class Missile:
 		self.x, self.y = x, y
 		self.dx, self.dy = dx, dy
 		self.size = size
+		self.time = 0
 		if (Missile.image == None):
 			Missile.image = load_image('image/ai_attack.png')
 
@@ -18,8 +19,7 @@ class Missile:
 		self.image.draw(self.x, self.y, self.size, self.size)
 
 	def update(self):
-		if game_world.isPaused():
-			return
+		self.time += game_framework.frame_time
 		self.x += Missile.RUN_SPEED_PPS * game_framework.frame_time * self.dx
 		self.y += Missile.RUN_SPEED_PPS * game_framework.frame_time * self.dy
 		if self.x < -self.size or self.y < -self.size or \

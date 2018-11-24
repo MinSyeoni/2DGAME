@@ -2,6 +2,7 @@ from pico2d import *
 import random
 import config
 import game_framework
+import game_world
 
 class Player:
     RUN_SPEED_PPS = 200
@@ -45,8 +46,6 @@ class Player:
             draw_rectangle(*self.get_bb())
 
     def update(self):
-        # self.x += Player.RUN_SPEED_PPS * game_framework.frame_time * self.dx
-        # self.y += Player.RUN_SPEED_PPS * game_framework.frame_time * self.dy
         self.timer += 1
         if self.timer > 15:
             self.frame = (self.frame + 1) % 8
