@@ -4,6 +4,7 @@ import tutorial_state
 from Player import Player
 from Coin import Coin
 from Life import Life
+from Ui import Button
 
 name = "StoreState"
 image = None
@@ -11,15 +12,8 @@ image = None
 class Store:
     def __init__(self):
         self.image = load_image('image/store_back.png')
-        # self.b1 = load_image('image/store1.png')
-        # self.b2 = load_image('image/store2.png')
-        # self.b3 = load_image('image/store3.png')
-        print(self.image)
     def draw(self):
         self.image.draw(400, 300)
-        # self.b1.draw(200, 320)
-        # self.b2.draw(400, 320)
-        # self.b3.draw(600, 320)
 
 class runsound:
     def __init__(self):
@@ -38,25 +32,6 @@ class buttonsound:
         pass
     def update(self):
         pass
-
-class Button:
-    def __init__(self, normal, selected, x, y):
-        self.normalImage = load_image(normal)
-        self.selectedImage = load_image(selected)
-        self.x, self.y = x, y
-        self.selected = False
-    def draw(self):
-        if self.selected:
-            self.selectedImage.draw(self.x, self.y)
-        else:
-            self.normalImage.draw(self.x, self.y)
-    def hits(self, x, y):
-        hw, hh = self.normalImage.w // 2, self.normalImage.h // 2
-        if x < self.x - hw: return False
-        if x > self.x + hw: return False
-        if y < self.y - hh: return False
-        if y > self.y + hw: return False
-        return True
 
 buttons = []
 def selectButton(b):
