@@ -1,6 +1,6 @@
 from pico2d import *
 import game_framework
-import tutorial_state
+from store_state import storelife
 import game_world
 import random
 from Player import Player
@@ -102,7 +102,7 @@ def draw():
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
-    life.draw()
+    life.draw(storelife.lifex)
     coin.draw()
     aiLife.draw(player.x,player.y)
     game_world.draw()

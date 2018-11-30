@@ -33,6 +33,34 @@ class buttonsound:
     def update(self):
         pass
 
+# class storelife:
+#     def __init__(self):
+#         self.x = 0
+#         self.lifex = 0
+#         self.font = load_font('resource/ConsolaMalgun.TTF', 40)
+#     def draw(self):
+#         self.font.draw(530, 550, '%d ' % (life.heart + self.x), (255, 0, 0))  # 생명 출력
+#     def update(self):
+#         self.lifex = life.heart + self.x
+#         if self.lifex <= 0:
+#             self.lifex = 0
+#
+# class storecoin:
+#     def __init__(self):
+#         self.x = 0
+#         self.coinx = 0
+#         self.font = load_font('resource/ConsolaMalgun.TTF', 40)
+#     def draw(self):
+#         if coin.coin + self.x >0:
+#             self.font.draw(630, 550, '%d ' % (coin.coin + self.x), (250, 250, 0))  # 코인 출력
+#         if coin.coin + self.x <=0:
+#             self.font.draw(630, 550, '%d ' % (0), (250, 250, 0))
+#     def update(self):
+#         self.coinx = coin.coin + self.x
+#         if self.coinx <=0:
+#             self.coinx = 0
+#         print("%d",self.coinx)
+
 buttons = []
 def selectButton(b):
     size = len(buttons)
@@ -40,6 +68,12 @@ def selectButton(b):
         if buttons[i] == b:
             print(str(i) + ' has been selected')
             buttons[i].selected = True
+            if buttons[0].selected == True:
+                s_life.x += 1
+                s_coin.x -= 100
+                if s_life.x >= 5:
+                    s_life.x = 5
+                print("heart +1")
         else:
             buttons[i].selected = False
 
@@ -84,6 +118,7 @@ def handle_events():
             for b in buttons:
                 if b.hits(x, y):
                     selectButton(b)
+                    print(b)
 
 def enter():
     global store
@@ -93,9 +128,13 @@ def enter():
     global run
     global sound
     global buttons
+    # global s_life
+    # global s_coin
+    # s_coin = storecoin()
+    # s_life = storelife()
     sound = buttonsound()
     coin = Coin()
-    life = Life()
+    life = Life.singleton()
     store = Store()
     player = Player()
     run = runsound()
@@ -113,14 +152,18 @@ def draw():
     store.draw()
     player.draw()
     coin.draw()
-    life.draw()
+    # life.draw(0)
+    s_life.draw()
+    s_coin.draw()
     for b in buttons:
         b.draw()
     update_canvas()
 
 def update():
     global player
+    global s_life
     player.update()
+    s_coin.update()
     if player.state == 0:
         player.x -= 1
         if player.x < 100:

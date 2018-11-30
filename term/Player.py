@@ -2,7 +2,6 @@ from pico2d import *
 import random
 import config
 import game_framework
-import game_world
 
 class Player:
     RUN_SPEED_PPS = 200
