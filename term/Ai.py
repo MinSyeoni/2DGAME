@@ -2,6 +2,7 @@ from pico2d import *
 import random
 import Player
 import game_framework
+import game_world
 
 class Ai:
     RUN_SPEED_PPS = 300
@@ -41,11 +42,8 @@ class Ai:
             self.ai_image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
 
     def update(self, px, py):
-        # self.timer+=1
-        # if self.timer > 50:
-        #     self.frame = (self.frame + 1) % 8
-        #     self.timer = 0
-
+        if game_world.isPaused():
+            return
         pointX, pointY = px - self.x, py - self.y
         list = math.sqrt(pointX ** 2 + pointY ** 2)
 

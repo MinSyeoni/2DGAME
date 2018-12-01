@@ -35,6 +35,12 @@ class die:
     def draw(self):
         self.image.draw(400,300)
 
+class start:
+    def __init__(self):
+        self.image = load_image('image/start.png')
+    def draw(self):
+        self.image.draw(400,300)
+
 class runsound:
     def __init__(self):
         self.run = load_wav('resource/run.wav')
@@ -54,9 +60,10 @@ class bulletsound:
         pass
 
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die
+    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die,start
     global gameState
     player = Player()
+    start = start()
     bg = Ingame()
     life = Life.singleton()
     coin = Coin.singleton()
@@ -75,6 +82,10 @@ def enter():
 def isPaused():
     global gameState
     return gameState != GAMESTATE_INPLAY
+
+def start_game():
+    global gameState
+    gameState = GAMESTATE_INPLAY
 
 def createMissle():
     m = Missile(*gen_random(),60)
@@ -108,7 +119,7 @@ def gen_random():
     return x,y,dx,dy
 
 def draw():
-    global player,bullets,bg,ai,coin,Boundingbox,aiLife,die
+    global player,bullets,bg,ai,coin,Boundingbox,aiLife,die,start
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
@@ -116,6 +127,8 @@ def draw():
     coin.draw()
     aiLife.draw(player.x,player.y)
     game_world.draw()
+    if gameState == GAMESTATE_READY:
+        start.draw()
     print(game_world.count_at_layer(game_world.layer_obstacle))
     for loc in player.attack:
         player.attack_image.draw(loc[0], loc[1])
@@ -221,7 +234,9 @@ def handle_events():
             player.state = 2
             player.goto = 2
 
-        # if event.key == SDLK_i:
+        if (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
+            if gameState == GAMESTATE_READY:
+                start_game()
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
@@ -229,6 +244,7 @@ def handle_events():
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
+
 
 def exit():
     game_world.clear()
