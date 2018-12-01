@@ -15,6 +15,9 @@ image = None
 global Boundingbox
 Boundingbox = 0
 
+GAMESTATE_READY, GAMESTATE_INPLAY, GAMESTETE_GAMEOVER = range(3)
+gameState = GAMESTATE_READY
+
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
@@ -64,6 +67,14 @@ def enter():
     bullet = bulletsound()
     die = die()
     game_world.add_object(player,game_world.layer_player)
+
+    global gameState
+    gameState = GAMESTATE_READY
+    game_world.isPaused = isPaused
+
+def isPaused():
+    global gameState
+    return gameState != GAMESTATE_INPLAY
 
 def createMissle():
     m = Missile(*gen_random(),60)

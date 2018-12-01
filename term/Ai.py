@@ -7,8 +7,8 @@ class Ai:
     RUN_SPEED_PPS = 300
 
     def __init__(self):
-        self.x = random.randint(100,700)
-        self.y = random.randint(150,500)
+        self.x = random.randint(600,700)
+        self.y = random.randint(450,500)
         self.field_width = 800
         self.field_height = 600
         self.speed = 0.2
