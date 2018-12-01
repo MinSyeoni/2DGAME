@@ -1,8 +1,12 @@
 from pico2d import *
 
 class AiLife:
+    instance = None
+    def singleton():
+        if AiLife.instance == None:
+            AiLife.instance = AiLife()
+        return AiLife.instance
     def __init__(self):
-        # self.image = load_image('image/life.png')
         self.heart = 100
         self.font = load_font('resource/ConsolaMalgun.TTF', 40)
 

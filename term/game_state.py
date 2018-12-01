@@ -56,8 +56,8 @@ def enter():
     player = Player()
     bg = Ingame()
     life = Life.singleton()
-    coin = Coin()
-    aiLife = AiLife()
+    coin = Coin.singleton()
+    aiLife = AiLife.singleton()
     ai = Ai()
     bullets = []
     run = runsound()
@@ -183,8 +183,6 @@ def handle_events():
     events = get_events()
 
     for event in events:
-        # handled = player.handle_event(events)
-        # if handled:
         if event.type == SDL_QUIT:
             running = False
         if event.type == SDL_QUIT:
@@ -211,6 +209,8 @@ def handle_events():
                 player.idle = 2
             player.state = 2
             player.goto = 2
+
+        # if event.key == SDLK_i:
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:

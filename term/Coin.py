@@ -1,6 +1,11 @@
 from pico2d import *
 
 class Coin:
+    instance = None
+    def singleton():
+        if Coin.instance == None:
+            Coin.instance = Coin()
+        return Coin.instance
     def __init__(self):
         self.image = load_image('image/coin.png')
         self.coin = 1000

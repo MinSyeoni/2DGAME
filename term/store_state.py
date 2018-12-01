@@ -5,6 +5,7 @@ from Player import Player
 from Coin import Coin
 from Life import Life
 from Ui import Button
+from AiLife import AiLife
 
 name = "StoreState"
 image = None
@@ -42,7 +43,17 @@ def selectButton(b):
             buttons[i].selected = True
             if buttons[0].selected == True:
                 life.heart+=1
-                print("heart +1")
+                if life.heart >=10:
+                    life.heart = 10
+                coin.coin -=100
+                if coin.coin <= 0:
+                    coin.coin = 0
+            if buttons[1].selected == True:
+                ai.heart -= 10
+                coin.coin -= 200
+                if coin.coin <= 0:
+                    coin.coin = 0
+
         else:
             buttons[i].selected = False
 
@@ -96,14 +107,16 @@ def enter():
     global coin
     global run
     global sound
+    global ai
     global buttons
     sound = buttonsound()
-    coin = Coin()
+    coin = Coin.singleton()
     life = Life.singleton()
+    ai = AiLife.singleton()
     store = Store()
     player = Player()
     run = runsound()
-    buttons.append(Button('image/store1.png', 'image/store1.png',200,320))
+    buttons.append(Button('image/store1.png', 'image/store1.png', 200, 320))
     buttons.append(Button('image/store2.png', 'image/store2.png', 400, 320))
     buttons.append(Button('image/store3.png', 'image/store3.png', 600, 320))
 
