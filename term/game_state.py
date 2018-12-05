@@ -10,7 +10,7 @@ from Coin import Coin
 from Ai import Ai
 from AiBullet import Missile
 from AiLife import AiLife
-from Uigame import Button
+from Ui import Button
 
 name = "GameState"
 image = None
@@ -39,8 +39,8 @@ class die:
 
 buttons = []
 def selectButton(b):
-    size = len(buttons)
-    for i in range(size):
+    sizes = len(buttons)
+    for i in range(sizes):
         if buttons[i] == b:
             print(str(i) + ' has been selected')
             buttons[i].selected = True
@@ -267,7 +267,11 @@ def handle_events():
                 tx, ty = event.x, 600 - 1 - event.y
                 newBullet = Bullet(player.x, player.y, tx, ty)
                 bullets.append(newBullet)
-
+            x, y = event.x, get_canvas_height() - event.y
+            for b in buttons:
+                if b.hits(x, y):
+                    selectButton(b)
+                    print(b)
 
 def exit():
     game_world.clear()
