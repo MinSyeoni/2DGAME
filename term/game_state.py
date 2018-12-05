@@ -1,6 +1,7 @@
 from pico2d import *
 import game_framework
 import game_world
+import store_state
 import random
 from Player import Player
 from Bullet import Bullet
@@ -9,6 +10,7 @@ from Coin import Coin
 from Ai import Ai
 from AiBullet import Missile
 from AiLife import AiLife
+from Ui import Button
 
 name = "GameState"
 image = None
@@ -34,6 +36,20 @@ class die:
         self.image = load_image('image/gameover.png')
     def draw(self):
         self.image.draw(400,300)
+
+buttons = []
+def selectButton(b):
+    size = len(buttons)
+    for i in range(size):
+        if buttons[i] == b:
+            print(str(i) + ' has been selected')
+            buttons[i].selected = True
+            # if buttons[0].selected == True:
+            #     game_framework.change_state(game_state)
+            if buttons[1].selected == True:
+                game_framework.change_state(store_state)
+        else:
+            buttons[i].selected = False
 
 class start:
     def __init__(self):
@@ -78,6 +94,10 @@ def enter():
     global gameState
     gameState = GAMESTATE_READY
     game_world.isPaused = isPaused
+    global buttons
+    buttons.append(Button('image/replay.png', 'image/replay.png', 200, 140))
+    buttons.append(Button('image/store.png', 'image/store.png', 400, 140))
+    buttons.append(Button('image/exit.png', 'image/exit.png', 600, 140))
 
 def isPaused():
     global gameState
@@ -148,6 +168,8 @@ def draw():
     if life.heart <= 0:
         life.heart = 0
         die.draw()
+        for b in buttons:
+            b.draw()
 
     update_canvas()
 
@@ -181,7 +203,6 @@ def update():
         collides = collides_distance(player, m)
         if (collides):
             life.heart -= 1
-            print("player life = ",life.heart)
             game_world.remove_object(m)
             break
 
@@ -189,6 +210,8 @@ def update():
     if (collides):
         life.heart = 0
         die.draw()
+        for b in buttons:
+            b.draw()
 
     for member in bullets:
         member.update()
@@ -198,6 +221,8 @@ def update():
             bullets = [b for b in bullets if b.shouldDelete]
             break
     bullets = [b for b in bullets if not b.shouldDelete]
+
+
 
 def handle_events():
     global running

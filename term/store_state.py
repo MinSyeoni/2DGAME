@@ -53,7 +53,6 @@ def selectButton(b):
                 coin.coin -= 200
                 if coin.coin <= 0:
                     coin.coin = 0
-
         else:
             buttons[i].selected = False
 
