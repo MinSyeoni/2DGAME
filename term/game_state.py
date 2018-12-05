@@ -207,7 +207,7 @@ def update():
     game_world.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
     ai.update(player.x, player.y)
-
+    player.update()
     if obstacle_count < 5:
         createMissle()
 

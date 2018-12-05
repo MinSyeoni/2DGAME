@@ -8,7 +8,7 @@ class Player:
     def __init__(self):
         self.x = 300
         self.y = 200
-        self.speed = 2
+        self.speed = 3
         self.timer = 0
         self.size = 60
         self.mouse_control = False
@@ -51,19 +51,19 @@ class Player:
             self.timer = 0
         self.distance = Player.RUN_SPEED_PPS * game_framework.frame_time
 
-        if len(self.attack) > 0:
-            (tx,ty) = self.attack[0]
-            attackX, attackY = tx - self.x, ty - self.y
-            list = math.sqrt(attackX ** 2 + attackY ** 2)
-            if list > 0:
-                self.x += self.speed * attackX / list
-                self.y += self.speed * attackY / list
-                if attackX < 0 and self.x < tx: self.x = tx
-                if attackX > 0 and self.x > tx: self.x = tx
-                if attackY < 0 and self.y < ty: self.y = ty
-                if attackY > 0 and self.y > ty: self.y = ty
-            if(self.x, self.y) == (tx,ty):
-                del self.attack[0]
+        # if len(self.attack) > 0:
+        #     (tx,ty) = self.attack[0]
+        #     attackX, attackY = tx - self.x, ty - self.y
+        #     list = math.sqrt(attackX ** 2 + attackY ** 2)
+        #     if list > 0:
+        #         self.x += self.speed * attackX / list
+        #         self.y += self.speed * attackY / list
+        #         if attackX < 0 and self.x < tx: self.x = tx
+        #         if attackX > 0 and self.x > tx: self.x = tx
+        #         if attackY < 0 and self.y < ty: self.y = ty
+        #         if attackY > 0 and self.y > ty: self.y = ty
+        #     if(self.x, self.y) == (tx,ty):
+        #         del self.attack[0]
 
         if self.state == 0:
             self.x -= 1

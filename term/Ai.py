@@ -12,7 +12,7 @@ class Ai:
         self.y = random.randint(450,500)
         self.field_width = 800
         self.field_height = 600
-        self.speed = 0.2
+        self.speed = 0.3
         self.size = 60
         self.timer = 0
         self.dx = 0
