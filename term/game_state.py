@@ -44,8 +44,12 @@ def selectButton(b):
         if buttons[i] == b:
             print(str(i) + ' has been selected')
             buttons[i].selected = True
+            # if buttons[0].selected == True:
+                # game_framework.change_state(store_state)
             if buttons[1].selected == True:
                 game_framework.change_state(store_state)
+            if buttons[2].selected == True:
+                game_framework.quit()
         else:
             buttons[i].selected = False
 
