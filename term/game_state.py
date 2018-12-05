@@ -10,7 +10,7 @@ from Coin import Coin
 from Ai import Ai
 from AiBullet import Missile
 from AiLife import AiLife
-from Ui import Button
+from Uigame import Button
 
 name = "GameState"
 image = None
@@ -44,8 +44,6 @@ def selectButton(b):
         if buttons[i] == b:
             print(str(i) + ' has been selected')
             buttons[i].selected = True
-            # if buttons[0].selected == True:
-            #     game_framework.change_state(game_state)
             if buttons[1].selected == True:
                 game_framework.change_state(store_state)
         else:

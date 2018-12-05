@@ -8,7 +8,7 @@ def add_object(o, layer):
 def remove_object(o):
 	for i in range(len(objects)):
 		if o in objects[i]:
-			print('deleting', o)
+			# print('deleting', o)
 			objects[i].remove(o)
 			del o
 			break
