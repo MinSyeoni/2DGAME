@@ -77,13 +77,22 @@ class bulletsound:
     def update(self):
         pass
 
+class clear:
+    def __init__(self):
+        self.image = load_image('image/gameclear.png')
+    def draw(self):
+        self.image.draw(400,300)
+    def update(self):
+        pass
+
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die,start
+    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die,start,clear
     global gameState
     player = Player()
     start = start()
     bg = Ingame()
     life = Life.singleton()
+    clear = clear()
     coin = Coin.singleton()
     aiLife = AiLife.singleton()
     ai = Ai()
@@ -198,7 +207,8 @@ def update():
     game_world.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
     ai.update(player.x, player.y)
-    if obstacle_count < 10:
+
+    if obstacle_count < 5:
         createMissle()
 
     for m in game_world.objects_at_layer(game_world.layer_obstacle):
@@ -224,7 +234,8 @@ def update():
             break
     bullets = [b for b in bullets if not b.shouldDelete]
 
-
+    if aiLife.heart == 0:
+        clear.draw()
 
 def handle_events():
     global running
