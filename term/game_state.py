@@ -7,6 +7,7 @@ from Player import Player
 from Bullet import Bullet
 from Life import Life
 from Coin import Coin
+from Ruin import Ruin
 from Ai import Ai
 from AiBullet import Missile
 from AiLife import AiLife
@@ -86,7 +87,7 @@ class clear:
         pass
 
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die,start,clear
+    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die,start,clear,ruin
     global gameState
     player = Player()
     start = start()
@@ -94,6 +95,7 @@ def enter():
     life = Life.singleton()
     clear = clear()
     coin = Coin.singleton()
+    ruin = Ruin.singleton()
     aiLife = AiLife.singleton()
     ai = Ai()
     bullets = []
@@ -150,12 +152,13 @@ def gen_random():
     return x,y,dx,dy
 
 def draw():
-    global player,bullets,bg,ai,coin,Boundingbox,aiLife,die,start
+    global player,bullets,bg,ai,coin,Boundingbox,aiLife,die,start,ruin
     clear_canvas()
     bg.draw()
     ai.draw(player.x)
     life.draw()
     coin.draw()
+    ruin.draw()
     aiLife.draw(player.x,player.y)
     game_world.draw()
     if gameState == GAMESTATE_READY:
