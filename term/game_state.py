@@ -182,6 +182,9 @@ def draw():
         for b in buttons:
             b.draw()
 
+    if aiLife.heart <= 0:
+        clear.draw()
+
     update_canvas()
 
 def collides_distance(a, b):
@@ -225,6 +228,9 @@ def update():
         for b in buttons:
             b.draw()
 
+    if aiLife.heart <= 0:
+        aiLife.heart = 0
+
     for member in bullets:
         member.update()
         collides = collides_bullet(ai, member)
@@ -233,9 +239,6 @@ def update():
             bullets = [b for b in bullets if b.shouldDelete]
             break
     bullets = [b for b in bullets if not b.shouldDelete]
-
-    if aiLife.heart == 0:
-        clear.draw()
 
 def handle_events():
     global running
