@@ -4,6 +4,7 @@ import tutorial_state
 from Player import Player
 from Coin import Coin
 from Life import Life
+from Ruin import Ruin
 from Ui import Button
 from AiLife import AiLife
 
@@ -51,6 +52,11 @@ def selectButton(b):
             if buttons[1].selected == True:
                 ai.heart -= 10
                 coin.coin -= 200
+                if coin.coin <= 0:
+                    coin.coin = 0
+            if buttons[2].selected == True:
+                coin.coin -= 500
+                ruin.ruin += 50
                 if coin.coin <= 0:
                     coin.coin = 0
         else:
@@ -107,11 +113,13 @@ def enter():
     global run
     global sound
     global ai
+    global ruin
     global buttons
     sound = buttonsound()
     coin = Coin.singleton()
     life = Life.singleton()
     ai = AiLife.singleton()
+    ruin = Ruin.singleton()
     store = Store()
     player = Player()
     run = runsound()

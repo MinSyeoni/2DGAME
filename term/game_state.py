@@ -185,7 +185,7 @@ def draw():
         for b in buttons:
             b.draw()
 
-    if aiLife.heart <= 0:
+    if aiLife.heart <= 0 or ruin.ruin == 100:
         clear.draw()
 
     update_canvas()
@@ -242,6 +242,11 @@ def update():
             bullets = [b for b in bullets if b.shouldDelete]
             break
     bullets = [b for b in bullets if not b.shouldDelete]
+
+    if player.x <150 and player.y <200:
+        ruin.ruin += 0.05
+        if ruin.ruin >= 100:
+            ruin.ruin = 100
 
 def handle_events():
     global running
