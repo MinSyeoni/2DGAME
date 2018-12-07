@@ -239,6 +239,7 @@ def update():
         collides = collides_bullet(ai, member)
         if (collides):
             aiLife.heart -= 5
+            coin.coin += 30
             bullets = [b for b in bullets if b.shouldDelete]
             break
     bullets = [b for b in bullets if not b.shouldDelete]
