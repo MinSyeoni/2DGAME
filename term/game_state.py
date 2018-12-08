@@ -24,19 +24,10 @@ gameState = GAMESTATE_READY
 class Ingame:
     def __init__(self):
         self.image = load_image('image/background.png')
-        self.bgm = load_music('resource/gamestate.mp3')
-        self.bgm.set_volume(100)
-        self.bgm.repeat_play()
     def draw(self):
         self.image.draw(400, 300)
     def update(self):
         pass
-
-class die:
-    def __init__(self):
-        self.image = load_image('image/gameover.png')
-    def draw(self):
-        self.image.draw(400,300)
 
 buttons = []
 def selectButton(b):
@@ -47,7 +38,10 @@ def selectButton(b):
             print(str(i) + ' has been selected')
             buttons[i].selected = True
             if buttons[0].selected == True:
-                gameState = GAMESTATE_INPLAY
+                if gameState == GAMESTETE_GAMEOVER:
+                    start_game()
+                elif gameState == GAMESTATE_INPLAY:
+                    gameState = GAMESTATE_PAUSED
             if buttons[1].selected == True:
                 game_framework.change_state(store_state)
             if buttons[2].selected == True:
@@ -102,8 +96,10 @@ def enter():
     bullets = []
     run_gamesound = runsound()
     bullet_gamesound = bulletsound()
-    die_game = die()
+    # die_game = die()
     # game_world.add_object(player_game,game_world.layer_player)
+    global gameoverimage
+    gameoverimage = load_image('image/gameover.png')
 
     global gameState
     gameState = GAMESTATE_READY
@@ -113,10 +109,6 @@ def enter():
     buttons.append(Button('image/store.png', 'image/store.png', 400, 140))
     buttons.append(Button('image/exit.png', 'image/exit.png', 600, 140))
 
-    if gameState != GAMESTATE_INPLAY:
-        delay(0.03)
-        return
-
 def isPaused():
     global gameState
     return gameState != GAMESTATE_INPLAY
@@ -124,6 +116,25 @@ def isPaused():
 def start_game():
     global gameState
     gameState = GAMESTATE_INPLAY
+    game_world.remove_objects_at_layer(game_world.layer_obstacle)
+    life_game.heart = 5
+    global music_game
+    music_game = load_music('resource/gamestate.mp3')
+    music_game.set_volume(100)
+    music_game.repeat_play()
+
+def ready_game():
+    global gameState
+    gameState = GAMESTATE_READY
+    game_world.remove_objects_at_layer(game_world.layer_obstacle)
+
+def end_game():
+    global gameState,diepng
+    gameState = GAMESTETE_GAMEOVER
+    global music_game
+    music_game.stop()
+    diepng = load_image('image/gameover.png')
+    diepng.draw(400, 300)
 
 def createMissle():
     m = Missile(*gen_random(),60)
@@ -187,14 +198,14 @@ def draw():
             member.draw_bb()
 
     if life_game.heart <= 0:
-        gameState = GAMESTATE_PAUSED
+        gameState = GAMESTETE_GAMEOVER
         life_game.heart = 0
-        die_game.draw()
+        end_game()
         for b in buttons:
             b.draw()
 
     if aiLife_game.heart <= 0 or ruin_game.ruin == 100:
-        gameState = GAMESTATE_PAUSED
+        gameState = GAMESTETE_GAMEOVER
         clear_game.draw()
 
     update_canvas()
@@ -236,7 +247,7 @@ def update():
     collides = collides_die(ai_game, player_game) ## player와 ai충돌시 게임오버
     if (collides):
         life_game.heart = 0
-        die_game.draw()
+        end_game()
         for b in buttons:
             b.draw()
 
