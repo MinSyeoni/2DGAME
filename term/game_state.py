@@ -87,22 +87,22 @@ class clear:
         pass
 
 def enter():
-    global player,bullets,bg,ai,life,coin,run,bullet,m1,m2,aiLife,die,start,clear,ruin
+    global player_game,bullets,bg_game,ai_game,life_game,coin_game,run_gamesound,bullet_gamesound,m1,m2,aiLife_game,die_game,start_gamepng,clear_game,ruin_game
     global gameState
-    player = Player()
-    start = start()
-    bg = Ingame()
-    life = Life.singleton()
-    clear = clear()
-    coin = Coin.singleton()
-    ruin = Ruin.singleton()
-    aiLife = AiLife.singleton()
-    ai = Ai()
+    player_game = Player()
+    start_gamepng = start()
+    bg_game = Ingame()
+    life_game = Life.singleton()
+    clear_game = clear()
+    coin_game = Coin.singleton()
+    ruin_game = Ruin.singleton()
+    aiLife_game = AiLife.singleton()
+    ai_game = Ai()
     bullets = []
-    run = runsound()
-    bullet = bulletsound()
-    die = die()
-    game_world.add_object(player,game_world.layer_player)
+    run_gamesound = runsound()
+    bullet_gamesound = bulletsound()
+    die_game = die()
+    # game_world.add_object(player_game,game_world.layer_player)
 
     global gameState
     gameState = GAMESTATE_READY
@@ -152,41 +152,42 @@ def gen_random():
     return x,y,dx,dy
 
 def draw():
-    global player,bullets,bg,ai,coin,Boundingbox,aiLife,die,start,ruin
+    global player_game,bullets,bg_game,ai_game,coin_game,Boundingbox,aiLife_game,die_game,start_gamepng,ruin_game
     clear_canvas()
-    bg.draw()
-    ai.draw(player.x)
-    life.draw()
-    coin.draw()
-    ruin.draw()
-    aiLife.draw(player.x,player.y)
+    bg_game.draw()
+    player_game.draw()
+    ai_game.draw(player_game.x)
+    life_game.draw()
+    coin_game.draw()
+    ruin_game.draw()
+    aiLife_game.draw(player_game.x,player_game.y)
     game_world.draw()
     if gameState == GAMESTATE_READY:
-        start.draw()
+        start_gamepng.draw()
     print(game_world.count_at_layer(game_world.layer_obstacle))
-    for loc in player.attack:
-        player.attack_image.draw(loc[0], loc[1])
+    for loc in player_game.attack:
+        player_game.attack_image.draw(loc[0], loc[1])
 
     for member in bullets:
         member.draw()
 
     if Boundingbox == 1:
-        player.draw_bb()
+        player_game.draw_bb()
         for member in bullets:
             member.draw_bb()
-        for member in ai:
+        for member in ai_game:
             member.draw_bb()
-        for member in player:
+        for member in player_game:
             member.draw_bb()
 
-    if life.heart <= 0:
-        life.heart = 0
-        die.draw()
+    if life_game.heart <= 0:
+        life_game.heart = 0
+        die_game.draw()
         for b in buttons:
             b.draw()
 
-    if aiLife.heart <= 0 or ruin.ruin == 100:
-        clear.draw()
+    if aiLife_game.heart <= 0 or ruin_game.ruin == 100:
+        clear_game.draw()
 
     update_canvas()
 
@@ -209,49 +210,49 @@ def collides_die(a, b):
     return sq_dist < radius_sum ** 2
 
 def update():
-    global player,bullets,bg,life,ai,die
+    global player_game,bullets,bg_game,life_game,ai_game,die_game
     game_world.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
-    ai.update(player.x, player.y)
-    player.update()
+    ai_game.update(player_game.x, player_game.y)
+    player_game.update()
     if obstacle_count < 5:
         createMissle()
 
     for m in game_world.objects_at_layer(game_world.layer_obstacle):
-        collides = collides_distance(player, m)
+        collides = collides_distance(player_game, m)
         if (collides):
-            life.heart -= 1
+            life_game.heart -= 1
             game_world.remove_object(m)
             break
 
-    collides = collides_die(ai, player) ## player와 ai충돌시 게임오버
+    collides = collides_die(ai_game, player_game) ## player와 ai충돌시 게임오버
     if (collides):
-        life.heart = 0
-        die.draw()
+        life_game.heart = 0
+        die_game.draw()
         for b in buttons:
             b.draw()
 
-    if aiLife.heart <= 0:
-        aiLife.heart = 0
+    if aiLife_game.heart <= 0:
+        aiLife_game.heart = 0
 
     for member in bullets:
         member.update()
-        collides = collides_bullet(ai, member)
+        collides = collides_bullet(ai_game, member)
         if (collides):
-            aiLife.heart -= 5
-            coin.coin += 30
+            aiLife_game.heart -= 5
+            coin_game.coin += 30
             bullets = [b for b in bullets if b.shouldDelete]
             break
     bullets = [b for b in bullets if not b.shouldDelete]
 
-    if player.x <150 and player.y <200:
-        ruin.ruin += 0.05
-        if ruin.ruin >= 100:
-            ruin.ruin = 100
+    if player_game.x <150 and player_game.y <200:
+        ruin_game.ruin += 0.05
+        if ruin_game.ruin >= 100:
+            ruin_game.ruin = 100
 
 def handle_events():
     global running
-    global player,tx,ty
+    global player_game,tx,ty
     global bullets, gameState
 
     events = get_events()
@@ -264,25 +265,25 @@ def handle_events():
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:  ##왼쪽
-                player.state = 0
-                run.run.play(1)
+                player_game.state = 0
+                run_gamesound.run.play(1)
             elif event.key == SDLK_d:  ##오른쪽
-                player.state = 1
-                run.run.play(1)
+                player_game.state = 1
+                run_gamesound.run.play(1)
             elif event.key == SDLK_w:  ##위
-                player.goto = 0
-                run.run.play(1)
+                player_game.goto = 0
+                run_gamesound.run.play(1)
             elif event.key == SDLK_s:  ##아래
-                player.goto = 1
-                run.run.play(1)
+                player_game.goto = 1
+                run_gamesound.run.play(1)
 
         elif event.type == SDL_KEYUP:  # 키 안누를때 앉기
             if event.key == SDLK_a:  ##왼쪽
-                player.idle = 1
+                player_game.idle = 1
             elif event.key == SDLK_d:  ##오른쪽\
-                player.idle = 2
-            player.state = 2
-            player.goto = 2
+                player_game.idle = 2
+            player_game.state = 2
+            player_game.goto = 2
 
         if (event.type, event.key) == (SDL_KEYDOWN, SDLK_SPACE):
             if gameState == GAMESTATE_READY:
@@ -290,9 +291,9 @@ def handle_events():
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
-                bullet.bullet.play(1)
+                bullet_gamesound.bullet.play(1)
                 tx, ty = event.x, 600 - 1 - event.y
-                newBullet = Bullet(player.x, player.y, tx, ty)
+                newBullet = Bullet(player_game.x, player_game.y, tx, ty)
                 bullets.append(newBullet)
             x, y = event.x, get_canvas_height() - event.y
             for b in buttons:

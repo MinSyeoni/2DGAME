@@ -38,16 +38,16 @@ class bulletsound:
         pass
 
 def enter():
-    global player,tutorial,bullets,run,bullet
-    player = Player()
+    global player_tuto,tutorial,bullets,run_tutosound,bullet_tutosound
+    player_tuto = Player()
     tutorial = Tutorial()
-    run = runsound()
+    run_tutosound = runsound()
     bullets = []
-    bullet = bulletsound()
+    bullet_tutosound = bulletsound()
 
 def handle_events():
     global running
-    global player
+    global player_tuto
     global attack
     global bullets
     global run
@@ -59,58 +59,58 @@ def handle_events():
         else :
             if event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
-            elif 350< player.x < 430 and 450 < player.y < 530:
+            elif 350< player_tuto.x < 430 and 450 < player_tuto.y < 530:
                 game_framework.change_state(store_state)
-            elif 650 < player.x < 750 and 300 < player.y <350:
+            elif 650 < player_tuto.x < 750 and 300 < player_tuto.y <350:
                 tutorial.bgm.pause()
                 game_framework.change_state(game_state)
 
         if event.type == SDL_KEYDOWN:
             if event.key == SDLK_a:     ##왼쪽
-                player.state = 0
-                run.run.play(1)
+                player_tuto.state = 0
+                run_tutosound.run.play(1)
             elif event.key == SDLK_d:   ##오른쪽
-                player.state = 1
-                run.run.play(1)
+                player_tuto.state = 1
+                run_tutosound.run.play(1)
             elif event.key == SDLK_w:   ##위
-                player.goto = 0
-                run.run.play(1)
+                player_tuto.goto = 0
+                run_tutosound.run.play(1)
             elif event.key == SDLK_s:   ##아래
-                player.goto = 1
-                run.run.play(1)
+                player_tuto.goto = 1
+                run_tutosound.run.play(1)
 
         elif event.type == SDL_KEYUP: # 키 안누를때 앉기
             if event.key == SDLK_a:  ##왼쪽
-                player.idle = 1
+                player_tuto.idle = 1
             elif event.key == SDLK_d:  ##오른쪽\
-                player.idle = 2
-            player.state = 2
-            player.goto = 2
+                player_tuto.idle = 2
+            player_tuto.state = 2
+            player_tuto.goto = 2
 
         if event.type == SDL_MOUSEBUTTONDOWN:
             if event.button == SDL_BUTTON_LEFT:
-                bullet.bullet.play(1)
+                bullet_tutosound.bullet.play(1)
                 tx, ty = event.x, 600 - 1 - event.y
-                newBullet = Bullet(player.x, player.y, tx, ty)
+                newBullet = Bullet(player_tuto.x, player_tuto.y, tx, ty)
                 bullets.append(newBullet)
 
 def draw():
-    global player,tutorial,bullets
+    global player_tuto,tutorial,bullets
     clear_canvas()
     tutorial.draw()
-    player.draw()
+    player_tuto.draw()
 
-    for loc in player.attack:
-        player.attack_image.draw(loc[0], loc[1])
+    for loc in player_tuto.attack:
+        player_tuto.attack_image.draw(loc[0], loc[1])
 
     for member in bullets:
         member.draw()
     update_canvas()
 
 def update():
-    global player
+    global player_tuto
     global bullets
-    player.update()
+    player_tuto.update()
 
     for member in bullets:
         member.update()
