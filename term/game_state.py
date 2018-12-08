@@ -18,7 +18,7 @@ image = None
 global Boundingbox
 Boundingbox = 0
 
-GAMESTATE_READY, GAMESTATE_INPLAY, GAMESTETE_GAMEOVER = range(3)
+GAMESTATE_READY, GAMESTATE_INPLAY, GAMESTETE_GAMEOVER, GAMESTATE_PAUSED = range(4)
 gameState = GAMESTATE_READY
 
 class Ingame:
@@ -40,13 +40,14 @@ class die:
 
 buttons = []
 def selectButton(b):
+    global gameState
     sizes = len(buttons)
     for i in range(sizes):
         if buttons[i] == b:
             print(str(i) + ' has been selected')
             buttons[i].selected = True
-            # if buttons[0].selected == True:
-                # game_framework.change_state(store_state)
+            if buttons[0].selected == True:
+                gameState = GAMESTATE_INPLAY
             if buttons[1].selected == True:
                 game_framework.change_state(store_state)
             if buttons[2].selected == True:
@@ -112,6 +113,10 @@ def enter():
     buttons.append(Button('image/store.png', 'image/store.png', 400, 140))
     buttons.append(Button('image/exit.png', 'image/exit.png', 600, 140))
 
+    if gameState != GAMESTATE_INPLAY:
+        delay(0.03)
+        return
+
 def isPaused():
     global gameState
     return gameState != GAMESTATE_INPLAY
@@ -153,6 +158,7 @@ def gen_random():
 
 def draw():
     global player_game,bullets,bg_game,ai_game,coin_game,Boundingbox,aiLife_game,die_game,start_gamepng,ruin_game
+    global gameState
     clear_canvas()
     bg_game.draw()
     player_game.draw()
@@ -181,12 +187,14 @@ def draw():
             member.draw_bb()
 
     if life_game.heart <= 0:
+        gameState = GAMESTATE_PAUSED
         life_game.heart = 0
         die_game.draw()
         for b in buttons:
             b.draw()
 
     if aiLife_game.heart <= 0 or ruin_game.ruin == 100:
+        gameState = GAMESTATE_PAUSED
         clear_game.draw()
 
     update_canvas()
