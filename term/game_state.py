@@ -38,13 +38,8 @@ def selectButton(b):
             print(str(i) + ' has been selected')
             buttons[i].selected = True
             if buttons[0].selected == True:
-                if gameState == GAMESTETE_GAMEOVER:
-                    start_game()
-                elif gameState == GAMESTATE_INPLAY:
-                    gameState = GAMESTATE_PAUSED
-            if buttons[1].selected == True:
                 game_framework.change_state(store_state)
-            if buttons[2].selected == True:
+            if buttons[1].selected == True:
                 game_framework.quit()
         else:
             buttons[i].selected = False
@@ -105,9 +100,8 @@ def enter():
     gameState = GAMESTATE_READY
     game_world.isPaused = isPaused
     global buttons
-    buttons.append(Button('image/replay.png', 'image/replay.png', 200, 140))
-    buttons.append(Button('image/store.png', 'image/store.png', 400, 140))
-    buttons.append(Button('image/exit.png', 'image/exit.png', 600, 140))
+    buttons.append(Button('image/store.png', 'image/store.png', 300, 140))
+    buttons.append(Button('image/exit.png', 'image/exit.png', 500, 140))
 
 def isPaused():
     global gameState
@@ -134,7 +128,7 @@ def end_game():
     global music_game
     music_game.stop()
     diepng = load_image('image/gameover.png')
-    diepng.draw(400, 300)
+    # diepng.draw(400, 300)
 
 def createMissle():
     m = Missile(*gen_random(),60)
@@ -205,8 +199,11 @@ def draw():
             b.draw()
 
     if aiLife_game.heart <= 0 or ruin_game.ruin == 100:
-        gameState = GAMESTETE_GAMEOVER
+        gameState = GAMESTATE_PAUSED
         clear_game.draw()
+
+    if gameState == GAMESTETE_GAMEOVER:
+        diepng.draw(400, 300)
 
     update_canvas()
 
