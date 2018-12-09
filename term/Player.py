@@ -19,7 +19,6 @@ class Player:
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽
         self.attack = [] # 총알 공격
-        self.attack_image = load_image('image/attack.png')
 
     def draw_bb(self):
         draw_rectangle(*self.get_bb())
@@ -37,9 +36,6 @@ class Player:
             self.player_image.clip_draw(self.frame * 100, 300, 100, 100, self.x, self.y)
         else:
             self.player_image.clip_draw(self.frame*100, self.state * 100, 100, 100, self.x, self.y)
-
-        for attack_image in self.attack:
-            self.attack_image.draw(attack_image[0], attack_image[1])
 
         if config.draws_bounding_box:
             draw_rectangle(*self.get_bb())
