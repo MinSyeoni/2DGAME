@@ -12,7 +12,7 @@ class Bullet:
         self.timer = 0
         self.speed = 2
         self.size = 30
-        self.image = load_image('image/bullet.png')
+        self.image = load_image('bullet.png')
         self.shouldDelete = False
 
     def draw(self):

@@ -12,7 +12,7 @@ class Missile:
 		self.size = size
 		self.time = 0
 		if (Missile.image == None):
-			Missile.image = load_image('image/ai_attack.png')
+			Missile.image = load_image('ai_attack.png')
 
 	def draw(self):
 		self.image.draw(self.x, self.y, self.size, self.size)

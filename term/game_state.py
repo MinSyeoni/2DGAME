@@ -23,7 +23,7 @@ gameState = GAMESTATE_READY
 
 class Ingame:
     def __init__(self):
-        self.image = load_image('image/background.png')
+        self.image = load_image('background.png')
     def draw(self):
         self.image.draw(400, 300)
     def update(self):
@@ -46,13 +46,13 @@ def selectButton(b):
 
 class start:
     def __init__(self):
-        self.image = load_image('image/start.png')
+        self.image = load_image('start.png')
     def draw(self):
         self.image.draw(400,300)
 
 class runsound:
     def __init__(self):
-        self.run = load_wav('resource/run.wav')
+        self.run = load_wav('run.wav')
         self.run.set_volume(20)
     def draw(self):
         pass
@@ -61,7 +61,7 @@ class runsound:
 
 class bulletsound:
     def __init__(self):
-        self.bullet = load_wav('resource/bullet.wav')
+        self.bullet = load_wav('bullet.wav')
         self.bullet.set_volume(30)
     def draw(self):
         pass
@@ -70,7 +70,7 @@ class bulletsound:
 
 class clear:
     def __init__(self):
-        self.image = load_image('image/gameclear.png')
+        self.image = load_image('gameclear.png')
     def draw(self):
         self.image.draw(400,300)
     def update(self):
@@ -94,14 +94,14 @@ def enter():
     # die_game = die()
     # game_world.add_object(player_game,game_world.layer_player)
     global gameoverimage
-    gameoverimage = load_image('image/gameover.png')
+    gameoverimage = load_image('gameover.png')
 
     global gameState
     gameState = GAMESTATE_READY
     game_world.isPaused = isPaused
     global buttons
-    buttons.append(Button('image/store.png', 'image/store.png', 300, 140))
-    buttons.append(Button('image/exit.png', 'image/exit.png', 500, 140))
+    buttons.append(Button('store.png', 'store.png', 300, 140))
+    buttons.append(Button('exit.png', 'exit.png', 500, 140))
 
 def isPaused():
     global gameState
@@ -113,7 +113,7 @@ def start_game():
     game_world.remove_objects_at_layer(game_world.layer_obstacle)
     life_game.heart = 5
     global music_game
-    music_game = load_music('resource/gamestate.mp3')
+    music_game = load_music('gamestate.mp3')
     music_game.set_volume(100)
     music_game.repeat_play()
 
@@ -127,7 +127,7 @@ def end_game():
     gameState = GAMESTETE_GAMEOVER
     global music_game
     music_game.stop()
-    diepng = load_image('image/gameover.png')
+    diepng = load_image('gameover.png')
     # diepng.draw(400, 300)
 
 def createMissle():
@@ -255,7 +255,7 @@ def update():
         member.update()
         collides = collides_bullet(ai_game, member)
         if (collides):
-            aiLife_game.heart -= 5
+            aiLife_game.heart -= 10
             coin_game.coin += 30
             bullets = [b for b in bullets if b.shouldDelete]
             break

@@ -13,13 +13,13 @@ image = None
 
 class Store:
     def __init__(self):
-        self.image = load_image('image/store_back.png')
+        self.image = load_image('store_back.png')
     def draw(self):
         self.image.draw(400, 300)
 
 class runsound:
     def __init__(self):
-        self.run = load_wav('resource/run.wav')
+        self.run = load_wav('run.wav')
         self.run.set_volume(20)
     def draw(self):
         pass
@@ -28,7 +28,7 @@ class runsound:
 
 class buttonsound:
     def __init__(self):
-        self.sound = load_wav('resource/button.wav')
+        self.sound = load_wav('button.wav')
         self.sound.set_volume(100)
     def draw(self):
         pass
@@ -123,9 +123,9 @@ def enter():
     store = Store()
     player = Player()
     run = runsound()
-    buttons.append(Button('image/store1.png', 'image/store1.png', 200, 320))
-    buttons.append(Button('image/store2.png', 'image/store2.png', 400, 320))
-    buttons.append(Button('image/store3.png', 'image/store3.png', 600, 320))
+    buttons.append(Button('store1.png', 'store1.png', 200, 320))
+    buttons.append(Button('store2.png', 'store2.png', 400, 320))
+    buttons.append(Button('store3.png', 'store3.png', 600, 320))
 
 def draw():
     global store

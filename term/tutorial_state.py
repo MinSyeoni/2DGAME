@@ -11,9 +11,9 @@ image = None
 
 class Tutorial:
     def __init__(self):
-        self.image = load_image('image/tutorial.png')
+        self.image = load_image('tutorial.png')
         print(self.image)
-        self.bgm = load_music('resource/tutorial.mp3')
+        self.bgm = load_music('tutorial.mp3')
         self.bgm.set_volume(100)
         self.bgm.repeat_play()
     def draw(self):
@@ -21,7 +21,7 @@ class Tutorial:
 
 class runsound:
     def __init__(self):
-        self.run = load_wav('resource/run.wav')
+        self.run = load_wav('run.wav')
         self.run.set_volume(20)
     def draw(self):
         pass
@@ -30,7 +30,7 @@ class runsound:
 
 class bulletsound:
     def __init__(self):
-        self.bullet = load_wav('resource/bullet.wav')
+        self.bullet = load_wav('bullet.wav')
         self.bullet.set_volume(30)
     def draw(self):
         pass

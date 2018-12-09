@@ -7,8 +7,8 @@ image = None
 
 class title:
     def __init__(self):
-        self.image = load_image('image/title.png')
-        self.bgm = load_music('resource/title.mp3')
+        self.image = load_image('title.png')
+        self.bgm = load_music('title.mp3')
         self.bgm.set_volume(100)
         self.bgm.repeat_play()
     def draw(self):
@@ -19,7 +19,7 @@ class title:
 class key:
     def __init__(self):
         self.timer = 0
-        self.key_sound = load_wav('resource/button.wav')
+        self.key_sound = load_wav('button.wav')
         self.key_sound.set_volume(100)
     def draw(self):
         pass

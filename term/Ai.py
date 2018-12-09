@@ -18,7 +18,7 @@ class Ai:
         self.dx = 0
         self.dy = 0
         self.frame = random.randint(0,7)
-        self.ai_image = load_image('image/ai_ani2.png')
+        self.ai_image = load_image('ai_ani2.png')
         self.goto = 0 # 0 업 1 다운
         self.state = 0 # 0 왼쪽 1 오른쪽 2 위 3 아래
         self.idle = 0 # 0 이동중 1 왼쪽  2 오른쪽

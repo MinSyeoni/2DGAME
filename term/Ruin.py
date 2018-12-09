@@ -7,9 +7,9 @@ class Ruin:
             Ruin.instance = Ruin()
         return Ruin.instance
     def __init__(self):
-        self.image = load_image('image/ruin.png')
+        self.image = load_image('ruin.png')
         self.ruin = 0
-        self.font = load_font('resource/ConsolaMalgun.TTF', 40)
+        self.font = load_font('ConsolaMalgun.TTF', 40)
     def draw(self):
         self.image.draw(100,150)
         self.font.draw(60, 70, 'Ruin:    %', (255, 255, 255))
