@@ -111,7 +111,7 @@ def update():
     global player_tuto
     global bullets
     player_tuto.update()
-
+    delay(0.005)
     for member in bullets:
         member.update()
 

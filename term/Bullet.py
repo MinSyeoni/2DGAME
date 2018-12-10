@@ -10,7 +10,7 @@ class Bullet:
         self.targetY = targetY
         self.speedX,self.speedY= (self.targetX - self.currX) / 10, (self.targetY - self.currY) / 10
         self.timer = 0
-        self.speed = 2
+        self.speed = 3
         self.size = 30
         self.image = load_image('bullet.png')
         self.shouldDelete = False

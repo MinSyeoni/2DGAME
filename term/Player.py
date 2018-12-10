@@ -8,7 +8,7 @@ class Player:
     def __init__(self):
         self.x = 300
         self.y = 200
-        self.speed = 3
+        self.speed = 5
         self.timer = 0
         self.size = 60
         self.mouse_control = False
@@ -48,19 +48,19 @@ class Player:
         self.distance = Player.RUN_SPEED_PPS * game_framework.frame_time
 
         if self.state == 0:
-            self.x -= 1
+            self.x -= 3
             if self.x < 100:
                 self.x = 100
         elif self.state == 1:
-            self.x += 1
+            self.x += 3
             if self.x > 700:
                 self.x = 700
 
         if self.goto == 0:
-            self.y += 1
+            self.y += 3
             if self.y > 520:
                 self.y = 520
         elif self.goto == 1:
-            self.y -= 1
+            self.y -= 3
             if self.y < 150:
                 self.y = 150

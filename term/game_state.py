@@ -91,8 +91,6 @@ def enter():
     bullets = []
     run_gamesound = runsound()
     bullet_gamesound = bulletsound()
-    # die_game = die()
-    # game_world.add_object(player_game,game_world.layer_player)
     global gameoverimage
     gameoverimage = load_image('gameover.png')
 
@@ -228,10 +226,11 @@ def collides_die(a, b):
 def update():
     global player_game,bullets,bg_game,life_game,ai_game,die_game
     game_world.update()
+    player_game.update()
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
     ai_game.update(player_game.x, player_game.y)
-    player_game.update()
-    if obstacle_count < 7:
+
+    if obstacle_count < 5:
         createMissle()
 
     for m in game_world.objects_at_layer(game_world.layer_obstacle):
@@ -262,7 +261,7 @@ def update():
     bullets = [b for b in bullets if not b.shouldDelete]
 
     if player_game.x <150 and player_game.y <200:
-        ruin_game.ruin += 0.05
+        ruin_game.ruin += 0.1
         if ruin_game.ruin >= 100:
             ruin_game.ruin = 100
 
