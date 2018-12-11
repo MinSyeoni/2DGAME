@@ -18,9 +18,11 @@ def remove_objects_at_layer(layer):
 		del o
 	objects[layer] = []
 def clear():
+	global objects
 	for o in all_objects():
 		del o
 	objects.clear()
+	objects = [[], [], []]
 def all_objects():
 	for i in range(len(objects)):
 		for o in objects[i]:

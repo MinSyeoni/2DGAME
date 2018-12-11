@@ -25,6 +25,7 @@ def draw():
     update_canvas()
 
 def exit():
+    global logo
     del logo
 
 def handle_events():
