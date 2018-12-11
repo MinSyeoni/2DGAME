@@ -68,7 +68,7 @@ def handle_events():
     global sound
     events = get_events()
     for event in events:
-        if event.type == SDL_QUIT:
+        if event.type == SDL_QUIT or event.key == SDLK_ESCAPE:
             game_framework.quit()
         else :
             if 350< player.x < 430 and 100 < player.y < 180:
@@ -161,6 +161,8 @@ def update():
         player.y -= 1
         if player.y < 150:
             player.y = 150
+
+    delay(0.005)
 
 def exit():
     pass

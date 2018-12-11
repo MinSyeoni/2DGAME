@@ -275,7 +275,7 @@ def handle_events():
     for event in events:
         if event.type == SDL_QUIT:
             running = False
-        if event.type == SDL_QUIT:
+        if event.type == SDL_QUIT or event.key == SDLK_ESCAPE:
             game_framework.quit()
 
         if event.type == SDL_KEYDOWN:
