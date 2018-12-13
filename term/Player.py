@@ -48,19 +48,19 @@ class Player:
         self.distance = Player.RUN_SPEED_PPS * game_framework.frame_time
 
         if self.state == 0:
-            self.x -= 3
+            self.x -= 2
             if self.x < 100:
                 self.x = 100
         elif self.state == 1:
-            self.x += 3
+            self.x += 2
             if self.x > 700:
                 self.x = 700
 
         if self.goto == 0:
-            self.y += 3
+            self.y += 2
             if self.y > 520:
                 self.y = 520
         elif self.goto == 1:
-            self.y -= 3
+            self.y -= 2
             if self.y < 150:
                 self.y = 150

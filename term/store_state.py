@@ -56,7 +56,7 @@ def selectButton(b):
                     coin.coin = 0
             if buttons[2].selected == True:
                 coin.coin -= 500
-                ruin.ruin += 50
+                ruin.ruin += 10
                 if coin.coin <= 0:
                     coin.coin = 0
         else:
@@ -162,7 +162,7 @@ def update():
         if player.y < 150:
             player.y = 150
 
-    delay(0.005)
+    delay(0.007)
 
 def exit():
     pass

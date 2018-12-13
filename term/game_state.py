@@ -109,7 +109,7 @@ def start_game():
     global gameState
     gameState = GAMESTATE_INPLAY
     game_world.remove_objects_at_layer(game_world.layer_obstacle)
-    life_game.heart = 5
+    # life_game.heart =
     global music_game
     music_game = load_music('gamestate.mp3')
     music_game.set_volume(100)
@@ -230,7 +230,7 @@ def update():
     obstacle_count = game_world.count_at_layer(game_world.layer_obstacle)
     ai_game.update(player_game.x, player_game.y)
 
-    if obstacle_count < 5:
+    if obstacle_count < 10:
         createMissle()
 
     for m in game_world.objects_at_layer(game_world.layer_obstacle):
